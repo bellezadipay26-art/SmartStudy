@@ -1,0 +1,107 @@
+/* ProfileCard.css */
+
+.ProfileCard {
+  position: absolute;
+  overflow-x: hidden;
+  text-align: center;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  height: 810px;
+  width: 600px;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.ProfileCard.active {
+  /* transform: translateX(10%) translateY(-0%) scale(1); */
+  box-shadow: 5px 2px 15px rgba(0, 0, 0, 0.4);
+  z-index: 40;
+  /* background-color: red; */
+  height: 810px;
+  width: 600px;
+}
+
+.ProfileCardHeaderr {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.ProfileCardHeader h2 {
+  margin: 0;
+  color: #2b2d42;
+  font-size: 1.5rem;
+}
+
+.ProfileCardBodyy {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ProfileCardBodyy p {
+  /* padding: 10px; */
+}
+
+
+.ProfileCardImage img {
+  width: 100%;
+  max-height: 280px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ProfileCardInfo p,
+.ProfileCardCourses p,
+.ProfileCardDescription p {
+  margin: 0;
+  color: #5e6472;
+  font-size: 1rem;
+}
+
+.ProfileCardInfo {
+  /* margin-bottom: 20px; */
+}
+
+.ProfileCardCourses {
+  /* margin-bottom: 20px; */
+}
+
+.ProfileCardDescription {
+  /* border: 2px solid #2B2D42; */
+  text-align: justify;
+  border-radius: 10px;
+  height: auto;
+  width: 100%;
+}
+
+.ProfileCardFooter {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProfileCardFooter button {
+  flex: 1;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.ProfileCardFooter button.like {
+  background-color: #b8f2e6;
+  color: #2b2d42;
+}
+
+.ProfileCardFooter button.dislike {
+  background-color: #ffa69e;
+  color: #2b2d42;
+}
+
+.ProfileCardFooter button:hover {
+  opacity: 0.8;
+}

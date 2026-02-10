@@ -1,0 +1,6 @@
+type TestEntity @table {
+  name: String!
+  description: String
+  value: String
+  createdAt: Timestamp!
+}
