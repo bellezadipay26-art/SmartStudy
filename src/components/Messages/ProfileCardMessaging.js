@@ -45,6 +45,11 @@ const ProfileCardMessaging = ({ selected }) => {
                 <strong>Subjects:</strong>{" "}
                 {(Array.isArray(userData?.currentCourses) ? userData.currentCourses : []).join(", ")}
               </p>
+              
+              <p>
+                <strong>Learning Style:</strong>{" "}
+                {userData?.learningStyle || ""}
+              </p>
             </div>
             <div className="ProfileCardDescription">
               <p>{userData.description}</p>

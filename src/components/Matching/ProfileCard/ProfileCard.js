@@ -8,6 +8,7 @@ const ProfileCard = ({ userData, isActive, onLike, onDislike }) => {
     name = "",
     pastCourses = [],
     preferredSchedule = "", 
+    learningStyle = "",
     yearsOfStudy = "",
     description = "",
     currentCourses = [],
@@ -16,6 +17,13 @@ const ProfileCard = ({ userData, isActive, onLike, onDislike }) => {
     image = "",
   } = userData;
   console.log(userData);
+
+  const scheduleText =
+  preferredSchedule ||
+  (Array.isArray(pastCourses) ? pastCourses.join(", ") : "");
+
+  const subjectsText = (Array.isArray(currentCourses) ? currentCourses : []).join(", ");
+
   return (
     <div
       id={`profileCard_${uid}`}
@@ -40,14 +48,15 @@ const ProfileCard = ({ userData, isActive, onLike, onDislike }) => {
         </div>
         <div style={{ margin: "0px" }}>
           <p>
-            <strong>Preferred Schedule:</strong>{" "}
-            {preferredSchedule || (Array.isArray(pastCourses) ? pastCourses.join(", ") : "")}
+            <strong>Preferred Schedule:</strong> {scheduleText}
+          </p>
+          <p>
+            <strong>Subjects:</strong> {subjectsText}
+          </p>
+          <p>
+            <strong>Learning Style:</strong> {learningStyle}
           </p>
 
-          <p>
-            <strong>Subjects:</strong>{" "}
-            {(Array.isArray(currentCourses) ? currentCourses : []).join(", ")}
-          </p>
         </div>
         <div className="ProfileCardDescriptionn">
           <p>{description}</p>

@@ -31,6 +31,12 @@ const SCHEDULE_OPTIONS = [
   "Anytime (Flexible)",
 ];
 
+const LEARNING_STYLE_OPTIONS = [
+  "Visual Learner",
+  "Auditory Learner",
+  "Kinesthetic Learner",
+];
+
 const Accounts = () => {
   // State variables for user information
   const [name, setName] = useState("");
@@ -44,6 +50,8 @@ const Accounts = () => {
 
   // ✅ Past Courses -> Preferred Schedule (single)
   const [preferredSchedule, setPreferredSchedule] = useState("");
+  
+  const [learningStyle, setLearningStyle] = useState("");
 
   const [user, setUser] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -67,7 +75,8 @@ const Accounts = () => {
           setMajor(userDetails.major || "");
           setYearsOfStudy(userDetails.yearsOfStudy || "");
           setDescription(userDetails.description || "");
-
+          setLearningStyle(userDetails.learningStyle || "");
+          
           // ✅ load subjects + schedule
           setSubjects(userDetails.currentCourses || []);
           setPreferredSchedule(userDetails.preferredSchedule || "");
@@ -193,7 +202,7 @@ const Accounts = () => {
 
       // ✅ store schedule
       preferredSchedule,
-
+      learningStyle,
       image: base64Image || null,
     };
 
@@ -300,6 +309,21 @@ const Accounts = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+        </label>
+
+        <label>
+          Learning Style:
+          <select
+            value={learningStyle}
+            onChange={(e) => setLearningStyle(e.target.value)}
+          >
+            <option value="">Select your learning style</option>
+            {LEARNING_STYLE_OPTIONS.map((style) => (
+              <option key={style} value={style}>
+                {style}
+              </option>
+            ))}
+          </select>
         </label>
 
         {/* ✅ Past Courses -> Preferred Schedule */}
