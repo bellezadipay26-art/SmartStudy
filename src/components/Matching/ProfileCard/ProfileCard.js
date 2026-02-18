@@ -7,6 +7,7 @@ const ProfileCard = ({ userData, isActive, onLike, onDislike }) => {
   const {
     name = "",
     pastCourses = [],
+    preferredSchedule = "", 
     yearsOfStudy = "",
     description = "",
     currentCourses = [],
@@ -39,10 +40,13 @@ const ProfileCard = ({ userData, isActive, onLike, onDislike }) => {
         </div>
         <div style={{ margin: "0px" }}>
           <p>
-            <strong>Preferred Schedule:</strong> {pastCourses.join(", ")}
+            <strong>Preferred Schedule:</strong>{" "}
+            {preferredSchedule || (Array.isArray(pastCourses) ? pastCourses.join(", ") : "")}
           </p>
+
           <p>
-            <strong>Subjects:</strong> {currentCourses.join(", ")}
+            <strong>Subjects:</strong>{" "}
+            {(Array.isArray(currentCourses) ? currentCourses : []).join(", ")}
           </p>
         </div>
         <div className="ProfileCardDescriptionn">

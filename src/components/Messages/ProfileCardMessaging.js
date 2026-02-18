@@ -37,7 +37,8 @@ const ProfileCardMessaging = ({ selected }) => {
             <div className="ProfileCardCourses">
               <p>
                 <strong>Preferred Schedule:</strong>{" "}
-                {(Array.isArray(userData?.pastCourses) ? userData.pastCourses : []).join(", ")}
+                {userData?.preferredSchedule ||
+                  (Array.isArray(userData?.pastCourses) ? userData.pastCourses.join(", ") : "")}
               </p>
 
               <p>
