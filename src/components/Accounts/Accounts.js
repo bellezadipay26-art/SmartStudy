@@ -12,7 +12,6 @@ import {
 } from "../../services/account";
 
 const SUBJECT_OPTIONS = [
-  "Mathematics",
   "Programming",
   "Physics",
   "Data Structures",
