@@ -1,0 +1,9 @@
+{
+  "appId": "com.smartstudy.cantilan",
+  "appName": "SmartStudy Cantilan",
+  "webDir": "build",
+  "server": {
+    "url": "https://smart-study-pn3z2jtro-belleza-dipays-projects.vercel.app/",
+    "cleartext": true
+  }
+}

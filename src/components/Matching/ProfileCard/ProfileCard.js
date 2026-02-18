@@ -39,10 +39,10 @@ const ProfileCard = ({ userData, isActive, onLike, onDislike }) => {
         </div>
         <div style={{ margin: "0px" }}>
           <p>
-            <strong>Past Courses:</strong> {pastCourses.join(", ")}
+            <strong>Preferred Schedule:</strong> {pastCourses.join(", ")}
           </p>
           <p>
-            <strong>Current Courses:</strong> {currentCourses.join(", ")}
+            <strong>Subjects:</strong> {currentCourses.join(", ")}
           </p>
         </div>
         <div className="ProfileCardDescriptionn">

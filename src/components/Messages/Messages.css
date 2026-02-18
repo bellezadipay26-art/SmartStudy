@@ -41,7 +41,7 @@
 .right,
 .message.sent {
   align-self: flex-end;
-  background-color: #ef233c;
+  background-color: #3558e5;
   /* Red */
   color: #edf2f4;
   /* White */
@@ -80,7 +80,7 @@
 }
 
 .send-button {
-  background-color: #ef233c;
+  background-color: #3558e5;
   /* Red */
   color: #edf2f4;
   /* White */

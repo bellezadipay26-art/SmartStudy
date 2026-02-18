@@ -36,12 +36,13 @@ const ProfileCardMessaging = ({ selected }) => {
             </div>
             <div className="ProfileCardCourses">
               <p>
-                <strong>Past Courses:</strong>{" "}
-                {userData?.pastCourses.join(", ")}
+                <strong>Preferred Schedule:</strong>{" "}
+                {(Array.isArray(userData?.pastCourses) ? userData.pastCourses : []).join(", ")}
               </p>
+
               <p>
-                <strong>Current Courses:</strong>{" "}
-                {userData?.currentCourses.join(", ")}
+                <strong>Subjects:</strong>{" "}
+                {(Array.isArray(userData?.currentCourses) ? userData.currentCourses : []).join(", ")}
               </p>
             </div>
             <div className="ProfileCardDescription">
