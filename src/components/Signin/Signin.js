@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordReset,
@@ -36,10 +35,6 @@ function Signin() {
       unsubscribe();
     };
   }, []);
-
-  const handleSignInWithGoogle = () => {
-    signInWithGoogle();
-  };
 
   const handleSignInWithEmailAndPassword = () => {
     logInWithEmailAndPassword(email, password);
@@ -101,13 +96,7 @@ function Signin() {
             >
               Sign In
             </button>
-            <button
-              type="button"
-              className="google"
-              onClick={handleSignInWithGoogle}
-            >
-              Sign In with Google
-            </button>
+            
             <p>
               Don't have an account?{" "}
               <span onClick={() => setIsSignIn(false)}>Sign Up</span>
