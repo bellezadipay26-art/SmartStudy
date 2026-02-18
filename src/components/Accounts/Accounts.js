@@ -1,6 +1,6 @@
 import { deleteUser } from "firebase/auth";
 import { db } from "../../services/firebase";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, collection, query, where, getDocs, writeBatch } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import "./Accounts.css";
 import { auth } from "../../services/firebase";
@@ -203,6 +203,16 @@ const Accounts = () => {
     alert("Account updated successfully");
   };
 
+  const deleteUserInformationByUid = async (uid) => {
+  const q = query(collection(db, "user_information"), where("uid", "==", uid));
+  const snap = await getDocs(q);
+
+  const batch = writeBatch(db);
+  snap.forEach((d) => batch.delete(d.ref));
+
+  await batch.commit();
+};
+
   const handleDeleteAccount = async () => {
     const ok = window.confirm("Delete account permanently? This cannot be undone.");
     if (!ok) return;
@@ -216,10 +226,17 @@ const Accounts = () => {
         return;
       }
 
-      const uid = currentUser.uid;
+     const uid = currentUser.uid;
 
-      await deleteDoc(doc(db, "users", uid));
+      // ✅ delete Firestore profile data in user_information
+      await deleteUserInformationByUid(uid);
+
+      // ✅ optional: only keep this if you really have users/{uid} docs
+      // await deleteDoc(doc(db, "users", uid));
+
+      // ✅ finally delete Auth user
       await deleteUser(currentUser);
+
 
       alert("Account deleted successfully");
     } catch (err) {
