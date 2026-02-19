@@ -113,3 +113,44 @@
   background-color: #edf2f4;
   /* Main background color */
 }
+
+/* =========================
+   ✅ ANDROID ONLY OVERRIDES
+   Messages list page
+   ========================= */
+
+.android .Messages {
+  margin-left: 0 !important;   /* removes desktop sidebar offset */
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  padding: 12px;
+  display: block !important;
+  box-sizing: border-box;
+}
+
+/* If you have a chat list container */
+.android .Messages .chat-list,
+.android .Messages .ChatsList,
+.android .Messages .messages-list {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Bigger tap targets for chat items */
+.android .Messages .chat-item,
+.android .Messages .ChatItem,
+.android .Messages .conversation-item {
+  padding: 12px !important;
+  border-radius: 14px;
+}
+
+/* Prevent long names/last message from being cut too aggressively */
+.android .Messages .chat-title,
+.android .Messages .chat-preview,
+.android .Messages .last-message {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: break-word;
+}

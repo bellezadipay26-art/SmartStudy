@@ -58,16 +58,10 @@ const Navbar = () => {
             display: "flex",
           }}
         >
-          <div className={`navbar-links signout`}>
-            <div className="navbar-links signout">
-              <button
-                type="button"
-                onClick={handleSignOut}
-                className="navbar-link-signout"
-              >
-                Sign Out
-              </button>
-            </div>
+          <div className="navbar-signout">
+            <button type="button" onClick={handleSignOut} className="navbar-link-signout">
+              Sign Out
+            </button>
           </div>
         </div>
       </div>

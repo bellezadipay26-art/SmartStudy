@@ -29,3 +29,42 @@
 .chat-list li:hover {
     background-color: #ebebeb;
 }
+
+/* =========================
+   ✅ ANDROID ONLY OVERRIDES
+   Sidebar (chat list)
+   ========================= */
+
+.android .sidebar-container {
+  /* make it usable on mobile */
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+
+  /* remove desktop sidebar look */
+  border-right: none;
+  border-bottom: 1px solid #ddd;
+
+  /* don't force long scroll for sidebar itself */
+  overflow-y: visible;
+}
+
+/* chat list items bigger tap targets */
+.android .chat-list li {
+  padding: 14px 12px !important;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  border: 1px solid #e7e7e7;
+}
+
+/* still keep hover effect harmless */
+.android .chat-list li:hover {
+  background-color: #f2f2f2;
+}
+
+/* optional: if you have long names, allow wrapping */
+.android .chat-list li {
+  white-space: normal;
+  word-break: break-word;
+}

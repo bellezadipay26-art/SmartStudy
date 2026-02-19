@@ -130,3 +130,44 @@
   background: #2f8cff;
   color: #fff;
 }
+
+/* =========================
+   ✅ ANDROID ONLY OVERRIDES
+   (won't affect desktop)
+   ========================= */
+.android .tm-card {
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.android .tm-avatar {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+}
+
+.android .tm-text {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: break-word;
+}
+
+.android .tm-name {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  font-size: 16px;
+}
+
+.android .tm-actions {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.android .tm-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+}

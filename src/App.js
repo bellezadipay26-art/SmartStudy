@@ -1,13 +1,12 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import { auth, db, logout } from "./services/firebase.js";
+import { auth } from "./services/firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Signin from "./components/Signin/Signin";
 import Navbar from "./components/Navbar/Navbar";
 import Matching from "./components/Matching/Matching.js";
-import Messages from "./components/Messages/Messages.js";
 import Accounts from "./components/Accounts/Accounts.js";
 import ChatPage from "./components/Messages/ChatPage.js";
 import UserProfilePage from "./components/Matching/UserProfilePage.js";
@@ -15,6 +14,18 @@ import UserProfilePage from "./components/Matching/UserProfilePage.js";
 
 const App = () => {
   const [user, loading, error] = useAuthState(auth);
+  
+  useEffect(() => {
+    const isNative = !!window.Capacitor?.isNativePlatform?.();
+    const platform = window.Capacitor?.getPlatform?.();
+
+    if (isNative && platform === "android") {
+      document.documentElement.classList.add("android");
+    } else {
+      document.documentElement.classList.remove("android");
+    }
+  }, []);
+  
   if (loading) {
     // You might want to show a loading spinner or some indication that the app is loading
     return <div>Loading...</div>;
