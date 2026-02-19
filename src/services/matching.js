@@ -105,33 +105,19 @@ const haveMutualLike = async (user1Uid, user2Uid) => {
 
 const checkLike = async (oneWay, likerUid, likedUserId) => {
   try {
-    // Check if likerUid likes likedUserId
-    const q1 = query(
-      likesCollection,
-      where("likedUserId", "==", likedUserId),
-      where("likerUid", "==", likerUid)
-    );
-
-    const querySnapshot1 = await getDocs(q1);
-
-    // Check if likedUserId likes likerUid
-    const q2 = query(
-      likesCollection,
-      where("likedUserId", "==", likerUid),
-      where("likerUid", "==", likedUserId)
-    );
-
-    const querySnapshot2 = await getDocs(q2);
+    const doc1 = await getDoc(doc(likesCollection, `${likerUid}_${likedUserId}`));
 
     if (oneWay) {
-      return !querySnapshot1.empty;
+      return doc1.exists();
     }
 
-    return !querySnapshot1.empty && !querySnapshot2.empty;
+    const doc2 = await getDoc(doc(likesCollection, `${likedUserId}_${likerUid}`));
+    return doc1.exists() && doc2.exists();
   } catch (error) {
     console.error("Error checking like:", error);
     throw error;
   }
 };
+
 
 export { haveMutualLike, checkLike, likeUser, dislikeUser, getRandomUsers };
