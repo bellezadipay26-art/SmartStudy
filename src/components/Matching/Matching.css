@@ -3,6 +3,7 @@
 .Matching {
   max-width: 1400px;
   height: 100vh;
+  min-height: 100vh;
   background-color: #EDF2F4;
   justify-content: center;
   align-content: center;
@@ -83,69 +84,17 @@ h1 {
    (won't affect desktop)
    ========================= */
 .android .Matching {
-  /* remove desktop layout constraints */
   margin-left: 0 !important;
   max-width: 100% !important;
   width: 100%;
   height: auto !important;
-
-  /* mobile layout */
   display: block !important;
   background: #EDF2F4;
   padding: 12px;
 }
 
-/* Header spacing */
-.android .Matching h1 {
-  font-size: 22px;
-  margin: 8px 0 4px;
-}
-
-/* Top matches list container */
 .android .TopMatchesContainer {
   max-width: 100% !important;
   margin: 0 auto;
   padding: 0 !important;
-}
-
-/* Make cards comfortable on phone */
-.android .tm-card {
-  border-radius: 16px;
-  padding: 12px;
-  margin-bottom: 12px;
-}
-
-/* Slightly smaller avatar for mobile */
-.android .tm-avatar {
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-}
-
-/* Allow long subjects/schedule to WRAP instead of cutting */
-.android .tm-text {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  word-break: break-word;
-}
-
-/* Optional: let the name wrap too */
-.android .tm-name {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  font-size: 16px;
-}
-
-/* Stack buttons so they don't look cramped */
-.android .tm-actions {
-  flex-direction: column;
-  gap: 10px;
-}
-
-.android .tm-btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 14px;
 }

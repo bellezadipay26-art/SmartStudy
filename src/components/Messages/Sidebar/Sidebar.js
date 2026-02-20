@@ -38,8 +38,12 @@ const Sidebar = ({ currentUserUid, onChatSelect }) => {
       <h2>Your Chats</h2>
       <ul className="chat-list">
         {chats.map((chat) => (
-          <li key={chat.id} onClick={() => onChatSelect(chat.otherUserUid)}>
-            {chat.name}{" "}
+          <li
+            key={chat.id}
+            className="chat-item"
+            onClick={() => onChatSelect(chat.otherUserUid)}
+          >
+            {chat.name}
           </li>
         ))}
       </ul>

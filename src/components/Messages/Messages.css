@@ -12,7 +12,10 @@
   display: flex; */
   border: 4px solid black;
   border-radius: 20px;
-
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 40px); /* adjust if needed */
+  box-sizing: border-box;
 }
 
 .messages {
@@ -114,43 +117,104 @@
   /* Main background color */
 }
 
+/* FORCE send button look (prevents global button reset) */
+.messages-container .send-button {
+  appearance: none;
+  -webkit-appearance: none;
+
+  background-color: #3558e5 !important;
+  color: #edf2f4 !important;
+
+  border: none !important;
+  text-decoration: none !important;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 20px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 /* =========================
    ✅ ANDROID ONLY OVERRIDES
-   Messages list page
+   Messages (chat box)
    ========================= */
 
-.android .Messages {
-  margin-left: 0 !important;   /* removes desktop sidebar offset */
-  width: 100%;
-  max-width: 100%;
-  height: auto !important;
-  padding: 12px;
-  display: block !important;
+.android .messages-container {
+  /* remove desktop offsets and make it full width */
+  margin-left: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+
+  /* make layout work on phone */
+  display: flex !important;
+  flex-direction: column !important;
+
+  /* remove big desktop frame */
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  /* prevent navbar overlap (bottom nav) */
+  height: calc(100dvh - 90px) !important; /* 90px is your bottom navbar spacing */
+  background: #EDF2F4;
   box-sizing: border-box;
 }
 
-/* If you have a chat list container */
-.android .Messages .chat-list,
-.android .Messages .ChatsList,
-.android .Messages .messages-list {
-  width: 100%;
-  max-width: 100%;
-}
-
-/* Bigger tap targets for chat items */
-.android .Messages .chat-item,
-.android .Messages .ChatItem,
-.android .Messages .conversation-item {
+.android .messages {
+  /* let messages scroll inside */
+  flex: 1 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
   padding: 12px !important;
-  border-radius: 14px;
+  overflow-y: auto !important;
+  border-radius: 0 !important;
 }
 
-/* Prevent long names/last message from being cut too aggressively */
-.android .Messages .chat-title,
-.android .Messages .chat-preview,
-.android .Messages .last-message {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  word-break: break-word;
+/* chat bubble sizing on mobile */
+.android .message {
+  max-width: 82% !important;
+  font-size: 16px !important;
+  line-height: 22px !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+}
+
+/* input bar */
+.android .input-container {
+  padding: 10px !important;
+  gap: 8px !important;
+  border-top: 1px solid #8d99ae !important;
+  background: #EDF2F4 !important;
+}
+
+/* text input */
+.android .text-field {
+  height: 42px !important;
+  font-size: 16px !important;
+  border-radius: 12px !important;
+  padding: 0 12px !important;
+}
+
+/* send button */
+.android .send-button {
+  width: auto !important;
+  min-width: 72px !important;
+  padding: 10px 14px !important;
+  font-size: 16px !important;
+  border-radius: 12px !important;
+}
+
+.android .attach-btn{
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+.android .file-name{
+  max-width: 140px;
+}
+.android .msg-image{
+  max-width: 220px;
 }

@@ -1,128 +1,127 @@
 /* ProfileCardMessaging.css */
 
-
 .ProfileCardMessaging {
-    position: absolute;
-    margin-left: 1000px;
-    /* Change to absolute */
-    /* max-width: 300px;
-    min-width: 300px; */
-    height: 600px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    z-index: 1;
-    height: 735px;
-    width: 80%;
-    /* Adjusted width for responsiveness */
-    max-width: 600px;
-    /* Maximum width for larger screens */
-}
+  /* let flex layout place it */
+  position: relative;
+  margin: 0;
 
-.ProfileCardInfo p,
-.ProfileCardCourses p,
-.ProfileCardDescription p {
-    /* ... (previous styles) */
-    font-size: 1rem;
-    padding: 10px
-        /* Adjusted font size for better readability */
-}
+  width: 100%;
+  max-width: 360px;
+  height: 735px;
+  height: calc(100vh - 24px); /* matches ChatPage padding */
+  max-height: calc(100vh - 24px);
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
 
-.ProfileCardHeader h2 {
-    margin: 0;
-    color: #2b2d42;
-    font-size: 1.5rem;
-    /* Increased font size for the name */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  z-index: 1;
+
+  /* ✅ makes content fit nicely */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .ProfileCardMessaging.active {
-    /* transform: translateX(10%) translateY(-0%) scale(1); */
-    box-shadow: 5px 2px 15px rgba(0, 0, 0, 0.4);
-    z-index: 40;
-    /* background-color: red; */
-    height: 725px;
-    width: 600px;
+  box-shadow: 5px 2px 15px rgba(0, 0, 0, 0.4);
+  z-index: 40;
+
+  width: 100%;
+  max-width: 360px;
+  height: 735px;
+}
+
+/* text spacing */
+.ProfileCardInfo p,
+.ProfileCardCourses p,
+.ProfileCardDescription p {
+  font-size: 1rem;
+  padding: 10px;
 }
 
 .ProfileCardHeader {
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.ProfileCardHeader h2 {
+  margin: 0;
+  color: #2b2d42;
+  font-size: 1.5rem;
 }
 
 .ProfileCardHeader h3 {
-    margin: 0;
-    color: #2b2d42;
+  margin: 0;
+  color: #2b2d42;
 }
 
+/* ✅ allow body to scroll if too long */
 .ProfileCardBody {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;        /* ✅ ADD THIS */
+  flex: 1;
+  overflow-y: auto;
 }
 
 .ProfileCardBody p {
-    margin: 0;
-    color: #5e6472;
+  margin: 0;
+  color: #5e6472;
 }
 
 .ProfileCardInfo {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .ProfileCardCourses {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .ProfileCardDescription {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .ProfileCardImage img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ProfileCardFooter {
-    display: flex;
-    justify-content: space-between;
-    /* padding: 20px; */
-    margin-top: 10px;
-
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding: 10px;
 }
 
 .ProfileCardFooter button {
-    flex: 1;
-    cursor: pointer;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-size: 1rem;
-    font-weight: bold;
+  flex: 1;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
-/* Like button */
 .ProfileCardFooter button.like {
-    margin: 10px;
-    background-color: #b8f2e6;
-    color: #2b2d42;
+  margin: 10px;
+  background-color: #b8f2e6;
+  color: #2b2d42;
 }
 
-/* Dislike button */
 .ProfileCardFooter button.dislike {
-    background-color: #ffa69e;
-    margin: 10px;
-    color: #2b2d42;
+  background-color: #ffa69e;
+  margin: 10px;
+  color: #2b2d42;
 }
 
-/* Adjust the color of the buttons on hover */
 .ProfileCardFooter button:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }

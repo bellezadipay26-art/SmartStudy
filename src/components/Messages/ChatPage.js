@@ -1,44 +1,33 @@
 // ChatPage.js
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Messages from "./Messages";
 import Sidebar from "./Sidebar/Sidebar";
 import ProfileCardMessaging from "./ProfileCardMessaging";
-import "./ChatPage.css"; // Import a new CSS file for styling
-import { fetchUserDetails } from "../../services/firebase";
+import "./ChatPage.css";
 
 const ChatPage = ({ currentUserUid }) => {
+  // this is the OTHER user's uid (match uid)
   const [selectedChatUid, setSelectedChatUid] = useState(null);
-  const [selectedUserData, selectedSetUserData] = useState("");
 
-  const handleChatSelect = (chatId, otherUserUid) => {
-    setSelectedChatUid(chatId);
-    console.log("chat id and selectedChatId in ChatPage is: ");
-    console.log(chatId);
-    console.log(otherUserUid);
+  const handleChatSelect = (otherUserUid) => {
+    setSelectedChatUid(otherUserUid);
   };
 
-  const handleSelectedSetUserData = async () => {
-    try {
-      const info = await fetchUserDetails(selectedChatUid);
-      selectedSetUserData(info);
-    } catch (error) {
-      console.error("Error fetching user data in chatPage:", error);
-    }
-  };
   return (
-    <div className="chat-page-container">
+    <div className={`chat-page-container ${selectedChatUid ? "has-chat" : ""}`}>
       <Sidebar
         currentUserUid={currentUserUid}
         onChatSelect={handleChatSelect}
+        selectedUid={selectedChatUid}   // optional highlight
       />
 
       {selectedChatUid && (
         <>
-          <Messages
-            currentUserUid={currentUserUid}
-            matchUid={selectedChatUid}
-          />
-          <ProfileCardMessaging selected={selectedChatUid} />
+          <Messages currentUserUid={currentUserUid} matchUid={selectedChatUid} />
+
+          <div className="profile-pane">
+            <ProfileCardMessaging selected={selectedChatUid} />
+          </div>
         </>
       )}
     </div>

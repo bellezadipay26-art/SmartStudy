@@ -10,3 +10,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #EDF2F4;   /* ✅ your gray */
+}
+
+/* your main page wrapper */
+.App {
+  min-height: 100vh;
+  background: #EDF2F4;
+}
+
+/* the area beside your sidebar/navbar */
+.content-container {
+  min-height: 100vh;
+  background: #EDF2F4;
+}
