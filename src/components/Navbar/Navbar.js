@@ -24,8 +24,7 @@ const Navbar = () => {
   };
 
   // Check if the current route is the sign-in screen
-  const isSignInScreen =
-    location.pathname === "/signin" || location.pathname === "/";
+  const isSignInScreen = location.pathname === "/signin";
 
   // Conditionally render the navbar based on the route
   if (isSignInScreen) {
@@ -33,40 +32,31 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={`navbar ${isMenuOpen ? "open" : ""}`}>
-      <div className="navbar-container">
-        <div className={`navbar-links ${isMenuOpen ? "open" : ""}`}>
-          <Link to="/" className="navbar-logo">
-            <Logo />
-          </Link>
-          <Link to="/match" className="navbar-link">
-            Match
-          </Link>{" "}
-          <Link to="/messages" className="navbar-link">
-            Messages
-          </Link>
-          <Link to="/accounts" className="navbar-link">
-            Profile
-          </Link>
-        </div>
+  <nav className={`navbar ${isMenuOpen ? "open" : ""}`}>
+    <div className="navbar-container">
+      <div className={`navbar-links ${isMenuOpen ? "open" : ""}`}>
+        <Link to="/match" className="navbar-logo">
+          <Logo />
+        </Link>
 
-        <div
-          style={{
-            width: "100%",
-            alignContent: "center",
-            justifyContent: "center",
-            display: "flex",
-          }}
-        >
-          <div className="navbar-signout">
-            <button type="button" onClick={handleSignOut} className="navbar-link-signout">
-              Sign Out
-            </button>
-          </div>
-        </div>
+        <Link to="/match" className="navbar-link">Match</Link>
+        <Link to="/messages" className="navbar-link">Messages</Link>
+        <Link to="/accounts" className="navbar-link">Profile</Link>
       </div>
-    </nav>
-  );
+
+      <div className="navbar-signout">
+        <button
+          type="button"
+          onClick={handleSignOut}
+          className="navbar-link-signout"
+        >
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </nav>
+);
+
 };
 
 export default Navbar;
