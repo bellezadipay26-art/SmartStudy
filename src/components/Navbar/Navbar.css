@@ -109,6 +109,9 @@
 /* =========================
    ANDROID ONLY BOTTOM NAV
    ========================= */
+:root{
+  --bottom-nav-h: 96px; /* adjust 88-110 if you want */
+}
 
 .android .navbar {
   position: fixed !important;
@@ -118,7 +121,7 @@
   top: auto !important;
 
   width: 100% !important;
-  height: 72px !important;
+  height: var(--bottom-nav-h) !important;
   padding: 0 !important;
 
   background: #3357ff !important;
@@ -131,7 +134,7 @@
 
 .android .navbar .navbar-container {
   width: 100% !important;
-  height: 72px !important;
+  height: var(--bottom-nav-h) !important;
 
   display: flex !important;
   flex-direction: row !important;

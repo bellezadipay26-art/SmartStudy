@@ -37,3 +37,20 @@
     transform: rotate(360deg);
   }
 }
+
+html, body, #root {
+  height: 100%;
+}
+
+.android .content-container {
+  margin-left: 0 !important;
+
+  /* ✅ reserve space so buttons never go under navbar */
+  padding-bottom: calc(var(--bottom-nav-h) + 16px) !important;
+
+  /* ✅ do not force 100vh pages to hide behind navbar */
+  min-height: calc(100dvh - var(--bottom-nav-h)) !important;
+
+  width: 100% !important;
+  box-sizing: border-box !important;
+}

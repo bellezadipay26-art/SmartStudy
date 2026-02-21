@@ -8,8 +8,8 @@
   width: 100%;
   max-width: 360px;
   height: 735px;
-  height: calc(100vh - 24px); /* matches ChatPage padding */
-  max-height: calc(100vh - 24px);
+  height: calc(100dvh - 24px); /* matches ChatPage padding */
+  max-height: calc(100dvh - 24px);
   border: 1px solid #ddd;
   background-color: #fff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);

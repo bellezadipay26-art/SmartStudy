@@ -47,6 +47,7 @@
   max-height: 100%;
   width: 100% !important;
   max-width: 360px !important;
+   margin: 0 !important;
 }
 
 /* =========================
@@ -54,40 +55,87 @@
    ChatPage (mobile layout)
    ========================= */
 
+:root { --bottom-nav-h: 96px; }
+
+/* ✅ ANDROID class version */
 .android .chat-page-container {
   margin-left: 0 !important;
-  width: 100% !important;
-  height: calc(100dvh - 90px) !important; /* space for bottom navbar */
+  width: 100vw !important;
+  height: calc(100dvh - var(--bottom-nav-h)) !important;
+  padding: 0 !important;
+  gap: 0 !important;
+
   display: flex !important;
   flex-direction: column !important;
-  box-sizing: border-box;
-  background: #EDF2F4;
+  overflow: hidden !important;
+
+  background: #EDF2F4 !important;
+  box-sizing: border-box !important;
 }
 
-/* Sidebar full width on mobile */
+.android .profile-pane,
+.android .ProfileCardMessaging {
+  display: none !important;
+}
+
 .android .chat-page-container .sidebar-container {
-  flex: none !important;
   width: 100% !important;
+  flex: none !important;
   margin: 0 !important;
-  padding: 10px !important;
-  border-right: 0 !important;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 
-/* When chat selected: hide sidebar */
 .android .chat-page-container.has-chat .sidebar-container {
   display: none !important;
 }
 
-/* Hide profile pane on mobile */
-.android .chat-page-container .profile-pane {
-  display: none !important;
-}
-
-/* Messages full width on mobile */
 .android .chat-page-container .messages-container {
   width: 100% !important;
   max-width: 100% !important;
-  margin-left: 0 !important;
-  box-sizing: border-box;
+  flex: 1 !important;
+  min-height: 0 !important;
+  box-sizing: border-box !important;
+}
+
+
+/* ✅ FALLBACK version (works even if .android is missing) */
+@media (max-width: 900px) {
+  .chat-page-container {
+    margin-left: 0 !important;
+    width: 100vw !important;
+    height: calc(100dvh - var(--bottom-nav-h)) !important;
+    padding: 0 !important;
+    gap: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+
+    background: #EDF2F4 !important;
+    box-sizing: border-box !important;
+  }
+
+  .profile-pane,
+  .ProfileCardMessaging {
+    display: none !important;
+  }
+
+  .chat-page-container .sidebar-container {
+    width: 100% !important;
+    flex: none !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .chat-page-container.has-chat .sidebar-container {
+    display: none !important;
+  }
+
+  .chat-page-container .messages-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+  }
 }

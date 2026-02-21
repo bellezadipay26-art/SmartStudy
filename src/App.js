@@ -15,9 +15,9 @@ const App = () => {
 
   useEffect(() => {
     const isNative = !!window.Capacitor?.isNativePlatform?.();
-    const platform = window.Capacitor?.getPlatform?.();
+    const isAndroidUA = /Android/i.test(navigator.userAgent);
 
-    if (isNative && platform === "android") {
+  if (platform === "android" || isAndroidUA) {
       document.documentElement.classList.add("android");
     } else {
       document.documentElement.classList.remove("android");
