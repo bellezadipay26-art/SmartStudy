@@ -158,11 +158,6 @@
   gap: 6px !important;
 }
 
-/* hide signout on bottom nav (put signout inside Accounts page instead) */
-.android .navbar .navbar-signout {
-  display: none !important;
-}
-
 /* tab look */
 .android .navbar .navbar-link,
 .android .navbar .navbar-logo {
@@ -205,4 +200,67 @@
 /* Android: prevent logo from being huge in bottom bar */
 .android .navbar .navbar-logo {
   font-size: 12px !important;
+}
+
+/* =========================================
+   FIX: Show Sign Out in Android bottom nav
+   Paste at VERY BOTTOM of Navbar.css
+   ========================================= */
+
+/* Let navbar row fit links + signout */
+.android .navbar .navbar-container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+}
+
+/* Main nav links take available space */
+.android .navbar .navbar-links {
+  flex: 1 !important;
+  width: auto !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  gap: 6px !important;
+}
+
+/* ✅ SHOW signout again */
+.android .navbar .navbar-signout {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Make signout look like a bottom-nav tab */
+.android .navbar .navbar-link-signout {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  color: #fff !important;
+  background: transparent !important;
+  text-decoration: none !important;
+
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+
+  padding: 6px 10px !important;
+  border-radius: 10px !important;
+  margin: 0 !important;
+  min-width: 64px !important;
+}
+
+/* Optional hover/tap style for Android */
+.android .navbar .navbar-link-signout:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
 }
