@@ -14,15 +14,15 @@ const App = () => {
   const [user, loading, error] = useAuthState(auth);
 
   useEffect(() => {
-    const isNative = !!window.Capacitor?.isNativePlatform?.();
-    const isAndroidUA = /Android/i.test(navigator.userAgent);
+    const platform = window.Capacitor?.getPlatform?.();
+  const isAndroidUA = /Android/i.test(navigator.userAgent);
 
   if (platform === "android" || isAndroidUA) {
-      document.documentElement.classList.add("android");
-    } else {
-      document.documentElement.classList.remove("android");
-    }
-  }, []);
+    document.documentElement.classList.add("android");
+  } else {
+    document.documentElement.classList.remove("android");
+  }
+}, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
