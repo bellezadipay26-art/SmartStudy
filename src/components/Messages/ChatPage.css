@@ -1,64 +1,68 @@
 /* ChatPage.css */
 
+:root { --bottom-nav-h: 96px; }
+
+/* =========================
+   DESKTOP LAYOUT
+   ========================= */
 .chat-page-container {
   display: flex;
   width: calc(100% - 220px);
   margin-left: 220px;
   height: 100vh;
   box-sizing: border-box;
-  gap: 12px;              /* ✅ space between columns */
-  padding: 12px;          /* ✅ space from screen edge */
-  overflow-x: hidden;     /* ✅ prevent horizontal overflow */
+  gap: 12px;
+  padding: 12px;
+  overflow-x: hidden;
 }
 
 /* LEFT: Sidebar */
 .chat-page-container .sidebar-container {
-  flex: 0 0 260px;   /* fixed sidebar width */
+  flex: 0 0 260px;
   width: 260px;
-  min-width: 0;           /* ✅ important in flex layouts */
+  min-width: 0;
 }
 
-/* CENTER: Messages (take remaining space) */
+/* CENTER: Messages */
 .chat-page-container .messages-container {
   flex: 1 1 auto;
-  min-width: 0;      /* IMPORTANT: allows flex child to shrink properly */
+  min-width: 0;
 }
 
-/* RIGHT: Profile pane (desktop only) */
+/* RIGHT: Profile pane */
 .profile-pane{
   flex: 0 0 360px;
   width: 360px;
   max-width: 360px;
   display: flex;
-  justify-content: center; /* ✅ center the card inside */
+  justify-content: center;
   align-self: stretch;
-  max-height: calc(100vh - 24px); /* matches your padding */
+  max-height: calc(100vh - 24px);
   overflow: hidden;
 }
 
-/* ✅ IMPORTANT: override absolute positioning of ProfileCardMessaging INSIDE profile-pane */
+/* keep ProfileCardMessaging inside pane */
 .profile-pane .ProfileCardMessaging,
 .profile-pane .ProfileCardMessaging.active {
   position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  right: auto !important;
   transform: none !important;
-  max-height: 100%;
   width: 100% !important;
   max-width: 360px !important;
-   margin: 0 !important;
+  margin: 0 !important;
+  max-height: 100%;
+}
+
+/* topbar hidden on desktop */
+.mobile-chat-topbar { 
+  display: none;
 }
 
 /* =========================
-   ✅ ANDROID ONLY OVERRIDES
-   ChatPage (mobile layout)
+   ✅ MOBILE MODE
+   (ONLY when ChatPage.js adds class "mobile")
    ========================= */
-
-:root { --bottom-nav-h: 96px; }
-
-/* ✅ ANDROID class version */
-.android .chat-page-container {
+   
+.chat-page-container.mobile{
   margin-left: 0 !important;
   width: 100vw !important;
   height: calc(100dvh - var(--bottom-nav-h)) !important;
@@ -73,69 +77,55 @@
   box-sizing: border-box !important;
 }
 
-.android .profile-pane,
-.android .ProfileCardMessaging {
+/* mobile top bar shown only when chat open */
+.chat-page-container.mobile.has-chat .mobile-chat-topbar{
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #EDF2F4;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.mobile-back{
+  background: #3558e5;
+  color: #fff;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.mobile-title{
+  font-weight: 800;
+  color: #2b2d42;
+}
+
+/* hide profile on mobile */
+.chat-page-container.mobile .profile-pane,
+.chat-page-container.mobile .ProfileCardMessaging{
   display: none !important;
 }
 
-.android .chat-page-container .sidebar-container {
+/* sidebar full screen on mobile */
+.chat-page-container.mobile .sidebar-container{
   width: 100% !important;
   flex: none !important;
   margin: 0 !important;
   box-sizing: border-box !important;
 }
 
-.android .chat-page-container.has-chat .sidebar-container {
+/* when chat open: hide sidebar */
+.chat-page-container.mobile.has-chat .sidebar-container{
   display: none !important;
 }
 
-.android .chat-page-container .messages-container {
+/* messages fill screen */
+.chat-page-container.mobile .messages-container{
   width: 100% !important;
   max-width: 100% !important;
   flex: 1 !important;
   min-height: 0 !important;
   box-sizing: border-box !important;
-}
-
-
-/* ✅ FALLBACK version (works even if .android is missing) */
-@media (max-width: 900px) {
-  .chat-page-container {
-    margin-left: 0 !important;
-    width: 100vw !important;
-    height: calc(100dvh - var(--bottom-nav-h)) !important;
-    padding: 0 !important;
-    gap: 0 !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-
-    background: #EDF2F4 !important;
-    box-sizing: border-box !important;
-  }
-
-  .profile-pane,
-  .ProfileCardMessaging {
-    display: none !important;
-  }
-
-  .chat-page-container .sidebar-container {
-    width: 100% !important;
-    flex: none !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .chat-page-container.has-chat .sidebar-container {
-    display: none !important;
-  }
-
-  .chat-page-container .messages-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 1 !important;
-    min-height: 0 !important;
-    box-sizing: border-box !important;
-  }
 }

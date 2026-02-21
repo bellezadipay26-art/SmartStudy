@@ -1,5 +1,5 @@
 // Messages.js
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import "./Messages.css";
 import { db, storage } from "../../services/firebase";
 
@@ -17,7 +17,8 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const Messages = ({ currentUserUid, matchUid }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
+  const endRef = useRef(null);
+  
   // attachments
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -45,22 +46,29 @@ const Messages = ({ currentUserUid, matchUid }) => {
     );
 
     const unsub = onSnapshot(q, (snap) => {
-      const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      setMessages(rows);
-    });
+    const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    setMessages(rows);
+
+    // scroll to bottom
+    setTimeout(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
+  });
 
     return () => unsub();
   }, [chatId]);
+
+  const MAX_MB = 8;
 
   const handlePickFiles = (e) => {
     const picked = Array.from(e.target.files || []);
     if (picked.length === 0) return;
 
-    // optional limit
-    const merged = [...files, ...picked].slice(0, 5);
-    setFiles(merged);
+    const filtered = picked.filter((f) => f.size <= MAX_MB * 1024 * 1024);
+    if (filtered.length !== picked.length) {
+      alert(`Some files are too large. Max ${MAX_MB}MB.`);
+    }
 
-    // allow re-pick same file
+    const merged = [...files, ...filtered].slice(0, 5);
+    setFiles(merged);
     e.target.value = "";
   };
 
@@ -167,6 +175,7 @@ const Messages = ({ currentUserUid, matchUid }) => {
             </div>
           );
         })}
+        <div ref={endRef} />
       </div>
 
       {/* selected files preview */}

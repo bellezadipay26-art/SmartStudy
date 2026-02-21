@@ -1,31 +1,32 @@
 /* Messages.css */
 
 .messages-container {
-  max-width: 1200px;
-  /*   margin: 0 auto;
-  padding: 20px;*/
-  /* align-items: center; */
-  /* max-height: 90vh; */
+  width: 100%;
+  max-width: 100%;          /* ✅ no 1200px on chat pages */
   background-color: #EDF2F4;
-  /* justify-content: center;
-  align-content: center;
-  display: flex; */
   border: 4px solid black;
   border-radius: 20px;
+
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 40px); /* adjust if needed */
+
+  /* ✅ IMPORTANT: let parent control height */
+  height: 100%;
+  min-height: 0;
+
   box-sizing: border-box;
 }
 
 .messages {
   flex: 1;
+  min-height: 0;           /* ✅ important for scrolling in flex */
   overflow-y: auto;
+
   display: flex;
   flex-direction: column;
   gap: 8px;
+
   margin: 10px;
-  min-height: 80%;
   padding: 10px;
   border-radius: 20px;
 }
@@ -36,7 +37,7 @@
   border-radius: 18px;
   position: relative;
   font-size: 20px;
-  line-height: 18px;
+  line-height: 26px;
   margin-bottom: 10px;
   margin-left: 5px;
 }
@@ -143,24 +144,11 @@
    Messages (chat box)
    ========================= */
 
-.android .messages-container {
-  /* remove desktop offsets and make it full width */
-  margin-left: 0 !important;
+.android .messages-container{
   width: 100% !important;
   max-width: 100% !important;
-
-  /* make layout work on phone */
-  display: flex !important;
-  flex-direction: column !important;
-
-  /* remove big desktop frame */
   border: 0 !important;
   border-radius: 0 !important;
-
-  /* prevent navbar overlap (bottom nav) */
-  height: calc(100dvh - 90px) !important; /* 90px is your bottom navbar spacing */
-  background: #EDF2F4;
-  box-sizing: border-box;
 }
 
 .android .messages {
@@ -188,6 +176,7 @@
   gap: 8px !important;
   border-top: 1px solid #8d99ae !important;
   background: #EDF2F4 !important;
+  border-radius: 0 !important;
 }
 
 /* text input */
@@ -217,4 +206,24 @@
 }
 .android .msg-image{
   max-width: 220px;
+}
+
+.chat-page-container.mobile .messages-container{
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.chat-page-container.mobile .messages{
+  flex: 1 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  overflow-y: auto !important;
+}
+
+.chat-page-container.mobile .input-container{
+  border-radius: 0 !important;
 }

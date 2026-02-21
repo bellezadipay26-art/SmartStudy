@@ -1,26 +1,125 @@
-import { deleteUser } from "firebase/auth";
-import { db } from "../../services/firebase";
-import { deleteDoc, doc, collection, query, where, getDocs, writeBatch } from "firebase/firestore";
-import React, { useState, useEffect } from "react";
+// Accounts.js
+import React, { useEffect, useState } from "react";
 import "./Accounts.css";
-import { auth } from "../../services/firebase";
 import { useNavigate } from "react-router-dom";
+
+import { deleteUser } from "firebase/auth";
+import { auth, db } from "../../services/firebase";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  writeBatch,
+} from "firebase/firestore";
+
 import {
   updateUserInformation,
   fetchUserDetails,
   addUserInformation,
 } from "../../services/account";
 
-const SUBJECT_OPTIONS = [
-  "Programming",
-  "Physics",
-  "Data Structures",
-  "Algorithms",
-  "Database Systems",
-  "Web Development",
-  "Networking",
-  "Software Engineering",
-  "Operating Systems",
+/* =========================================================
+   CLEAN GROUPED SUBJECT OPTIONS (for <optgroup>)
+   ========================================================= */
+const SUBJECT_GROUPS = [
+  {
+    label: "FIRST YEAR - First Semester",
+    options: [
+      "CS 111 - Introduction to Computing",
+      "CS 112 - Fundamentals of Programming - C++",
+      "GE-US - Understanding the Self",
+      "GE-MMW - Mathematics in the Modern World",
+      "GE-PC - Purposive Communication",
+      "Math 1 - Basic Mathematics",
+      "IT 1 - Living in the IT Era",
+      "PE 1 - Self-testing Activities",
+      "NSTP 1 - National Service Training Program 1",
+    ],
+  },
+  {
+    label: "FIRST YEAR - Second Semester",
+    options: [
+      "CS 121 - Discrete Structures 1",
+      "CS 122 - Intermediate Programming - Java Programming",
+      "CS 123 - Multimedia Systems",
+      "GE-BC - Business Correspondence",
+      "GE-STS - Science, Technology, and Society",
+      "GE-E - Ethics",
+      "GE-CW - The Contemporary World",
+      "PE 2 - Rhythmic Activities",
+      "NSTP 2 - National Service Training Program 2",
+    ],
+  },
+  {
+    label: "SECOND YEAR - First Semester",
+    options: [
+      "CS 211 - Discrete Structures 2",
+      "CS 212 - Object-Oriented Programming - VB.Net",
+      "CS 213 - Data Structures and Algorithms",
+      "CS 214 - Embedded Systems",
+      "Entrep 1 - The Entrepreneurial Mind",
+      "GE-AA - Art Appreciation",
+      "PE 3 - Individual and Dual Sports",
+    ],
+  },
+  {
+    label: "SECOND YEAR - Second Semester",
+    options: [
+      "CS 221 - Algorithms and Complexity",
+      "CS 222 - Information Management",
+      "CS 223 - Web Systems and Technologies 1",
+      "Math-Elec - Theory of Computation",
+      "Ecos 1 - People and the Earth's Ecosystem",
+      "GE-RPH - Readings in Philippine History",
+      "PE 4 - Recreational Activities",
+    ],
+  },
+  {
+    label: "THIRD YEAR - First Semester",
+    options: [
+      "CS 311 - Automata Theory and Formal Languages",
+      "CS 312 - Architecture and Organization",
+      "CS 313 - Information Assurance and Security",
+      "CS 314 - System Fundamentals - Elective 1",
+      "CS 315 - Application Development & Emerging Technologies",
+      "CS 316 - Web Systems and Technologies 2",
+      "Rizal - Life and Works of Rizal",
+    ],
+  },
+  {
+    label: "THIRD YEAR - Second Semester",
+    options: [
+      "CS 321 - Programming Languages",
+      "CS 322 - Software Engineering 1",
+      "CS 323 - Social Issues and Professional Practice 1",
+      "CS 324 - Graphics and Visual Computing - Elective 2",
+      "CS 325 - Mobile Computing 1",
+      "CS 326 - Modeling and Simulation",
+    ],
+  },
+  {
+    label: "THIRD YEAR - Summer",
+    options: ["CS 331 - Practicum (162 hours)"],
+  },
+  {
+    label: "FOURTH YEAR - First Semester",
+    options: [
+      "CS 411 - Human Computer Interaction",
+      "CS 412 - Operating Systems",
+      "CS 413 - Software Engineering 2",
+      "CS 414 - CS Thesis Writing 1",
+      "CS 415 - Intelligent Systems - Elective 3",
+      "CS 416 - Mobile Computing 2",
+    ],
+  },
+  {
+    label: "FOURTH YEAR - Second Semester",
+    options: [
+      "CS 421 - Networks and Communications",
+      "CS 422 - CS Thesis Writing 2",
+    ],
+  },
 ];
 
 const SCHEDULE_OPTIONS = [
@@ -37,24 +136,24 @@ const LEARNING_STYLE_OPTIONS = [
   "Kinesthetic Learner",
 ];
 
+const MAX_SUBJECTS = 5;
+const IMAGE_MAX_BYTES = 1048487; // ~1MB
+
 const Accounts = () => {
-  // State variables for user information
+  // Profile fields
   const [name, setName] = useState("");
   const [major, setMajor] = useState("");
   const [yearsOfStudy, setYearsOfStudy] = useState("");
   const [description, setDescription] = useState("");
+  const [learningStyle, setLearningStyle] = useState("");
+  const [preferredSchedule, setPreferredSchedule] = useState("");
 
-  // ✅ Current Courses -> Subjects (max 5)
+  // Subjects (selected chips)
   const [subjects, setSubjects] = useState([]);
   const [subjectPick, setSubjectPick] = useState("");
 
-  // ✅ Past Courses -> Preferred Schedule (single)
-  const [preferredSchedule, setPreferredSchedule] = useState("");
-  
-  const [learningStyle, setLearningStyle] = useState("");
-
-  const [user, setUser] = useState("");
-  const [imageFile, setImageFile] = useState(null);
+  // Image + auth state
+  const [user, setUser] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -62,13 +161,20 @@ const Accounts = () => {
 
   const navigate = useNavigate();
 
+  /* =========================================================
+     LOAD USER
+     ========================================================= */
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
+      try {
+        if (!authUser) {
+          navigate("/");
+          return;
+        }
+
         setUser(authUser);
 
         const userDetails = await fetchUserDetails(authUser.uid);
-        console.log(userDetails);
 
         if (userDetails) {
           setName(userDetails.name || "");
@@ -76,151 +182,177 @@ const Accounts = () => {
           setYearsOfStudy(userDetails.yearsOfStudy || "");
           setDescription(userDetails.description || "");
           setLearningStyle(userDetails.learningStyle || "");
-          
-          // ✅ load subjects + schedule
-          setSubjects(userDetails.currentCourses || []);
           setPreferredSchedule(userDetails.preferredSchedule || "");
+          setSubjects(Array.isArray(userDetails.currentCourses) ? userDetails.currentCourses : []);
 
-          // image from firestore usually base64 (no "data:" prefix)
+          // Stored image may be raw base64 (without data: prefix)
           setPreviewImage(userDetails.image || "");
           setBase64Image(userDetails.image || "");
         } else {
-          addUserInformation(authUser.uid);
+          await addUserInformation(authUser.uid);
         }
-      } else {
-        navigate("/");
+      } catch (err) {
+        console.error("Error loading account data:", err);
       }
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
-  // ✅ Subjects dropdown handler (max 5)
+  /* =========================================================
+     SUBJECTS (MAX 5)
+     ========================================================= */
   const handleSubjectSelect = (e) => {
     const value = e.target.value;
     if (!value) return;
 
-    // reset dropdown after pick
+    // reset select UI
     setSubjectPick("");
 
-    // no duplicates
     if (subjects.includes(value)) return;
 
-    // max 5
-    if (subjects.length >= 5) {
-      alert("You can select up to 5 subjects only.");
+    if (subjects.length >= MAX_SUBJECTS) {
+      alert(`You can select up to ${MAX_SUBJECTS} subjects only.`);
       return;
     }
 
-    setSubjects([...subjects, value]);
+    setSubjects((prev) => [...prev, value]);
   };
 
   const removeSubject = (subj) => {
-    setSubjects(subjects.filter((s) => s !== subj));
+    setSubjects((prev) => prev.filter((s) => s !== subj));
   };
 
-  // Function to convert image file to base64 with downsampling
-  const convertImageToBase64 = (imageFile, maxSizeInBytes) => {
+  /* =========================================================
+     IMAGE PROCESSING
+     ========================================================= */
+  const convertImageToBase64 = (file, maxSizeInBytes) => {
     return new Promise((resolve, reject) => {
       setIsProcessing(true);
 
       const reader = new FileReader();
+
       reader.onload = (event) => {
         const img = new Image();
+
         img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
+          try {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
 
-          let width = img.width;
-          let height = img.height;
-          const aspectRatio = width / height;
-          const maxDimension = Math.sqrt(maxSizeInBytes);
+            let width = img.width;
+            let height = img.height;
+            const aspectRatio = width / height;
 
-          if (width > height) {
-            width = maxDimension;
-            height = width / aspectRatio;
-          } else {
-            height = maxDimension;
-            width = height * aspectRatio;
+            // Simple heuristic resize target
+            const maxDimension = Math.max(600, Math.floor(Math.sqrt(maxSizeInBytes)));
+
+            if (width > height) {
+              width = Math.min(width, maxDimension);
+              height = width / aspectRatio;
+            } else {
+              height = Math.min(height, maxDimension);
+              width = height * aspectRatio;
+            }
+
+            canvas.width = Math.round(width);
+            canvas.height = Math.round(height);
+
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+            setIsProcessing(false);
+            resolve(dataUrl);
+          } catch (err) {
+            setIsProcessing(false);
+            reject(err);
           }
-
-          canvas.width = width;
-          canvas.height = height;
-
-          ctx.drawImage(img, 0, 0, width, height);
-
-          const base64String = canvas.toDataURL("image/jpeg", 0.9);
-          setIsProcessing(false);
-          resolve(base64String);
         };
+
+        img.onerror = (err) => {
+          setIsProcessing(false);
+          reject(err);
+        };
+
         img.src = event.target.result;
       };
 
-      reader.onerror = (error) => {
+      reader.onerror = (err) => {
         setIsProcessing(false);
-        reject(error);
+        reject(err);
       };
 
-      reader.readAsDataURL(imageFile);
+      reader.readAsDataURL(file);
     });
   };
 
-  // Function to handle image file selection
   const handleImageChange = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
-    setImageFile(file);
+    try {
+      // quick preview
+      const previewReader = new FileReader();
+      previewReader.onloadend = () => setPreviewImage(previewReader.result);
+      previewReader.readAsDataURL(file);
 
-    // preview as dataURL
-    const reader = new FileReader();
-    reader.onloadend = () => setPreviewImage(reader.result);
-    reader.readAsDataURL(file);
-
-    const base64String = await convertImageToBase64(file, 1048487);
-    const final = base64String.split(",")[1];
-    setBase64Image(final);
+      // compressed base64 for Firestore
+      const dataUrl = await convertImageToBase64(file, IMAGE_MAX_BYTES);
+      const rawBase64 = dataUrl.split(",")[1] || "";
+      setBase64Image(rawBase64);
+    } catch (err) {
+      console.error("Image processing failed:", err);
+      alert("Image processing failed. Please try another image.");
+    }
   };
 
-  // Function to handle form submission
+  /* =========================================================
+     SAVE PROFILE
+     ========================================================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isProcessing) {
-      console.log("Image is still processing. Please wait.");
+    if (!user?.uid) {
+      alert("No user is logged in.");
       return;
     }
 
-    const userData = {
-      name,
-      major,
-      yearsOfStudy,
-      description,
+    if (isProcessing) {
+      alert("Image is still processing. Please wait.");
+      return;
+    }
 
-      // ✅ store subjects in currentCourses field (same as before)
-      currentCourses: subjects,
+    try {
+      const userData = {
+        name: name.trim(),
+        major: major.trim(),
+        yearsOfStudy: yearsOfStudy ? String(yearsOfStudy) : "",
+        description: description.trim(),
+        currentCourses: subjects, // keep your existing Firestore field name
+        preferredSchedule,
+        learningStyle,
+        image: base64Image || null,
+      };
 
-      // ✅ store schedule
-      preferredSchedule,
-      learningStyle,
-      image: base64Image || null,
-    };
-
-    console.log(userData);
-
-    await updateUserInformation(user.uid, userData);
-    alert("Account updated successfully");
+      await updateUserInformation(user.uid, userData);
+      alert("Account updated successfully");
+    } catch (err) {
+      console.error("Update failed:", err);
+      alert("Update failed. Please try again.");
+    }
   };
 
+  /* =========================================================
+     DELETE ACCOUNT
+     ========================================================= */
   const deleteUserInformationByUid = async (uid) => {
-  const q = query(collection(db, "user_information"), where("uid", "==", uid));
-  const snap = await getDocs(q);
+    const q = query(collection(db, "user_information"), where("uid", "==", uid));
+    const snap = await getDocs(q);
 
-  const batch = writeBatch(db);
-  snap.forEach((d) => batch.delete(d.ref));
-
-  await batch.commit();
-};
+    const batch = writeBatch(db);
+    snap.forEach((d) => batch.delete(d.ref));
+    await batch.commit();
+  };
 
   const handleDeleteAccount = async () => {
     const ok = window.confirm("Delete account permanently? This cannot be undone.");
@@ -235,21 +367,13 @@ const Accounts = () => {
         return;
       }
 
-     const uid = currentUser.uid;
-
-      // ✅ delete Firestore profile data in user_information
-      await deleteUserInformationByUid(uid);
-
-      // ✅ optional: only keep this if you really have users/{uid} docs
-      // await deleteDoc(doc(db, "users", uid));
-
-      // ✅ finally delete Auth user
+      await deleteUserInformationByUid(currentUser.uid);
       await deleteUser(currentUser);
 
-
       alert("Account deleted successfully");
+      navigate("/signin");
     } catch (err) {
-      console.error(err);
+      console.error("Delete failed:", err);
 
       if (err?.code === "auth/requires-recent-login") {
         alert("Please sign in again, then try Delete Account.");
@@ -261,16 +385,19 @@ const Accounts = () => {
     }
   };
 
-  // ✅ preview src fix:
-  // if previewImage already starts with "data:", use it.
-  // else assume it's base64 only.
+  /* =========================================================
+     IMAGE PREVIEW SOURCE FIX
+     ========================================================= */
   const previewSrc =
-    previewImage && previewImage.startsWith("data:")
+    previewImage && String(previewImage).startsWith("data:")
       ? previewImage
       : previewImage
       ? `data:image/png;base64,${previewImage}`
       : "";
 
+  /* =========================================================
+     RENDER
+     ========================================================= */
   return (
     <div className="UpdateProfileContainer">
       <h2>Update Account</h2>
@@ -326,7 +453,6 @@ const Accounts = () => {
           </select>
         </label>
 
-        {/* ✅ Past Courses -> Preferred Schedule */}
         <label>
           Preferred Schedule:
           <select
@@ -342,15 +468,23 @@ const Accounts = () => {
           </select>
         </label>
 
-        {/* ✅ Current Courses -> Subjects dropdown (max 5) */}
         <label>
-          Subjects (max 5):
+          Subjects (max {MAX_SUBJECTS}):
           <select value={subjectPick} onChange={handleSubjectSelect}>
             <option value="">Select subjects you are studying</option>
-            {SUBJECT_OPTIONS.map((subj) => (
-              <option key={subj} value={subj} disabled={subjects.includes(subj)}>
-                {subj}
-              </option>
+
+            {SUBJECT_GROUPS.map((group) => (
+              <optgroup key={group.label} label={group.label}>
+                {group.options.map((subj) => (
+                  <option
+                    key={subj}
+                    value={subj}
+                    disabled={subjects.includes(subj)}
+                  >
+                    {subj}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
 
@@ -366,7 +500,7 @@ const Accounts = () => {
           </div>
 
           <div style={{ fontSize: "12px", marginTop: "6px" }}>
-            {subjects.length}/5 selected
+            {subjects.length}/{MAX_SUBJECTS} selected
           </div>
         </label>
 
@@ -380,14 +514,16 @@ const Accounts = () => {
         {previewSrc && (
           <div className="ImagePreview">
             <img
-              style={{ height: "400px", width: "auto", borderRadius: "10px" }}
               src={previewSrc}
               alt="Preview"
+              style={{ height: "400px", width: "auto", borderRadius: "10px" }}
             />
           </div>
         )}
 
-        <button disabled={isProcessing}>Update Account</button>
+        <button type="submit" disabled={isProcessing || isDeleting}>
+          Update Account
+        </button>
 
         <button
           type="button"

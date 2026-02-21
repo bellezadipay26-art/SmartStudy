@@ -1,63 +1,192 @@
+/* Accounts.css */
+/* Scoped styles for Accounts page only */
+
+/* =========================
+   Main container
+   ========================= */
 .UpdateProfileContainer {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #edf2f4;
-    border-radius: 8px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: min(760px, calc(100% - 24px));
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #edf2f4;
+  border-radius: 14px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  text-align: center;
 }
 
-.form-group {
-    margin-bottom: 20px;
+.UpdateProfileContainer h2 {
+  margin: 0 0 16px 0;
+  color: #2b2d42;
+  text-align: center;
 }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #2b2d42;
+/* =========================
+   Form layout
+   ========================= */
+.UpdateProfileContainer > form {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
 }
 
-input,
-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
+/* Center every direct child block */
+.UpdateProfileContainer > form > * {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-button {
-    background-color: #2b2d42;
-    color: #edf2f4;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+/* =========================
+   Grouped section card (optional)
+   ========================= */
+.FormSection {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border: 1px solid #dfe5ea;
+  border-radius: 12px;
+  padding: 14px;
+  box-sizing: border-box;
+  text-align: center;
 }
 
-button:hover {
-    background-color: #3558e5;
+.SectionTitle {
+  margin: 0 0 12px 0;
+  color: #2b2d42;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
 }
 
-.ImagePreview {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+.SectionSubtext {
+  margin: -6px 0 12px 0;
+  color: #5e6472;
+  font-size: 13px;
+  text-align: center;
 }
 
+/* Optional 2-column row */
+.FieldRow {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* =========================
+   Field wrappers
+   ========================= */
+.form-group,
+.FieldGroup {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* If your JSX uses direct labels as field wrappers */
+.UpdateProfileContainer > form > label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0;
+}
+
+/* Labels */
+.UpdateProfileContainer label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+  color: #2b2d42;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* =========================
+   Inputs / Textarea / Select
+   ========================= */
+.UpdateProfileContainer input,
+.UpdateProfileContainer textarea,
+.UpdateProfileContainer select {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 12px;
+  border: 1px solid #cfd6dc;
+  border-radius: 10px;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background: #fff;
+  color: #2b2d42;
+
+  /* ✅ center text inside fields */
+  text-align: center;
+}
+
+/* Center placeholders too */
+.UpdateProfileContainer input::placeholder,
+.UpdateProfileContainer textarea::placeholder {
+  text-align: center;
+}
+
+/* Better select text centering in Chrome/Edge */
+.UpdateProfileContainer select {
+  text-align-last: center;
+}
+
+/* Textarea height */
+.UpdateProfileContainer textarea {
+  min-height: 110px;
+  resize: vertical;
+  /* kept centered because you requested centered texts */
+  text-align: center;
+}
+
+/* File input spacing */
+.UpdateProfileContainer input[type="file"] {
+  padding: 8px;
+  background: #fff;
+}
+
+/* Focus state */
+.UpdateProfileContainer input:focus,
+.UpdateProfileContainer textarea:focus,
+.UpdateProfileContainer select:focus {
+  outline: none;
+  border-color: #3558e5;
+  box-shadow: 0 0 0 3px rgba(53, 88, 229, 0.12);
+}
+
+/* =========================
+   Helper text
+   ========================= */
+.HelpText {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* =========================
+   Chips for selected subjects
+   ========================= */
 .Chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 10px;
+  justify-content: center;
+  width: 100%;
 }
 
 .Chip {
@@ -67,12 +196,176 @@ button:hover {
   padding: 6px 10px;
   border-radius: 16px;
   background: #eef2ff;
+  border: 1px solid #d7defc;
+  color: #2b2d42;
+  font-size: 13px;
 }
 
 .Chip button {
   border: none;
   background: transparent;
+  color: #2b2d42;
   cursor: pointer;
   font-size: 16px;
   line-height: 1;
+  padding: 0;
+  width: auto;
+  margin: 0;
+}
+
+/* =========================
+   Loader
+   ========================= */
+.Loader {
+  display: inline-block;
+  width: 100%;
+  max-width: 420px;
+  background: #fff3cd;
+  color: #7a5d00;
+  border: 1px solid #ffe08a;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* =========================
+   Image preview
+   ========================= */
+.ImagePreview {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding: 10px;
+  background: #fff;
+  border: 1px dashed #cfd6dc;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.ImagePreview img {
+  max-width: 100%;
+  height: auto !important;
+  border-radius: 10px;
+  display: block;
+}
+
+/* =========================
+   Action buttons
+   ========================= */
+.ActionButtons {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  justify-content: center;
+}
+
+.ActionButtons button {
+  flex: 1;
+}
+
+/* If button is direct child of form */
+.UpdateProfileContainer > form > button {
+  width: 100%;
+  max-width: 420px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Buttons scoped to Accounts page */
+.UpdateProfileContainer button {
+  background-color: #2b2d42;
+  color: #edf2f4;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.05s ease;
+}
+
+.UpdateProfileContainer button:hover {
+  background-color: #3558e5;
+}
+
+.UpdateProfileContainer button:active {
+  transform: translateY(1px);
+}
+
+.UpdateProfileContainer button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Optional button variants */
+.PrimaryBtn {
+  background-color: #3558e5 !important;
+}
+
+.PrimaryBtn:hover {
+  background-color: #2948c8 !important;
+}
+
+.DangerBtn {
+  background-color: #c1121f !important;
+}
+
+.DangerBtn:hover {
+  background-color: #a50f1a !important;
+}
+
+/* =========================
+   Mobile responsive
+   ========================= */
+@media (max-width: 768px) {
+  .UpdateProfileContainer {
+    width: calc(100% - 16px);
+    margin: 8px auto;
+    padding: 14px;
+    border-radius: 12px;
+    max-width: none;
+  }
+
+  .UpdateProfileContainer > form {
+    max-width: 100%;
+  }
+
+  .FieldRow {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .FormSection {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .form-group,
+  .FieldGroup,
+  .UpdateProfileContainer input,
+  .UpdateProfileContainer select,
+  .UpdateProfileContainer textarea,
+  .ActionButtons,
+  .Loader,
+  .ImagePreview,
+  .UpdateProfileContainer > form > button {
+    max-width: 100%;
+  }
+
+  .ActionButtons {
+    flex-direction: column;
+  }
+
+  .UpdateProfileContainer h2 {
+    font-size: 20px;
+  }
 }
