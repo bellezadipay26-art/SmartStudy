@@ -8,7 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Matching from "./components/Matching/Matching.js";
 import Accounts from "./components/Accounts/Accounts.js";
 import ChatPage from "./components/Messages/ChatPage.js";
-import UserProfilePage from "./components/Matching/UserProfilePage.js";
+import UserProfilePage from "./components/Matching/UserProfilePage/UserProfilePage.js";
 
 const App = () => {
   const [user, loading, error] = useAuthState(auth);

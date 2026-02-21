@@ -1,5 +1,11 @@
 /* Navbar.css */
 
+/* =========================
+   Desktop / Default Sidebar Nav
+   ========================= */
+:root {
+  --bottom-nav-h: 72px; /* Android bottom nav height */
+}
 
 .navbar {
   background-color: #3558e5;
@@ -11,24 +17,26 @@
   left: 0;
 
   width: 10%;
-  height: 100vh;          /* KEEP THIS */
-  /* REMOVE height: 100%; */
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
-  justify-content: space-between; /* MAGIC: top items + bottom signout */
   transition: transform 0.3s ease-in-out;
-
-  overflow-y: auto; /* optional: para pag marami links, scroll */
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
+.navbar.open {
+  transform: translateX(0);
+}
 
 .navbar-container {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* links top, signout bottom */
+  justify-content: space-between;
 }
 
 .navbar-header {
@@ -44,8 +52,8 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
-  align-items: center;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
@@ -57,62 +65,49 @@
   font-size: 1rem;
 }
 
-.navbar-link {
-  color: #fff;
-  text-decoration: none;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  transition: color 0.3s ease-in-out;
-}
-
-.navbar-link:hover {
-  color: #EDF2F4;
-}
-
-/* Style for Sign Out link */
-.navbar-link-signout {
-  color: #EDF2F4;
-  /* Use the primary color from your palette */
-  background-color: #5E6472;
-  /* Use a background color complementary to the text color */
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  margin-bottom: 1rem;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.navbar-link-signout:hover {
-  color: #D90429;
-  /* Change the text color on hover */
-  background-color: #2B2D42;
-  /* Change the background color on hover */
-}
-
-.navbar.open {
-  transform: translateX(0);
-}
-
 .navbar-links {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
   width: 100%;
-  /* Adjusted width */
+}
+
+.navbar-link {
+  color: #fff;
+  text-decoration: none;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-link:hover {
+  color: #edf2f4;
 }
 
 .navbar-signout {
   padding: 12px 0;
 }
 
+/* Sign Out (desktop) */
+.navbar-link-signout {
+  color: #edf2f4;
+  background-color: #5e6472;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.navbar-link-signout:hover {
+  color: #d90429;
+  background-color: #2b2d42;
+}
 
 /* =========================
    ANDROID ONLY BOTTOM NAV
    ========================= */
-:root{
-  --bottom-nav-h: 96px; /* adjust 88-110 if you want */
-}
-
 .android .navbar {
   position: fixed !important;
   left: 0 !important;
@@ -129,36 +124,71 @@
 
   display: flex !important;
   align-items: center !important;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.15) !important;
+  justify-content: center !important;
+
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+}
+
+.android .navbar.open {
+  transform: translateX(0) !important;
 }
 
 .android .navbar .navbar-container {
   width: 100% !important;
-  height: var(--bottom-nav-h) !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
 
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-around !important;
+  justify-content: space-between !important;
 
-  padding: 0 10px !important;
-  box-sizing: border-box !important;
+  gap: 4px !important;
+  padding: 4px 6px !important;
 }
 
-/* show links as tabs */
-.android .navbar .navbar-links {
-  width: 100% !important;
+/* Header area for logo */
+.android .navbar .navbar-header {
+  flex: 0 0 auto !important;
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
 
   display: flex !important;
-  flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-around !important;
+  justify-content: center !important;
 
   margin: 0 !important;
-  gap: 6px !important;
+  padding: 0 !important;
 }
 
-/* tab look */
+/* Hide hamburger on Android bottom nav */
+.android .navbar .menu-button {
+  display: none !important;
+}
+
+/* Main links row */
+.android .navbar .navbar-links {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: auto !important;
+
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+
+  margin: 0 !important; /* remove desktop margin-top */
+  gap: 2px !important;
+}
+
+/* Reset desktop margins that make tabs too tall/wide */
+.android .navbar .navbar-link {
+  margin: 0 !important;
+}
+
+/* Shared compact tab look */
 .android .navbar .navbar-link,
 .android .navbar .navbar-logo {
   display: flex !important;
@@ -169,76 +199,77 @@
   color: #fff !important;
   text-decoration: none !important;
 
-  font-size: 12px !important;
+  font-size: 10px !important;
   font-weight: 700 !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
 
-  padding: 6px 10px !important;
-  border-radius: 10px !important;
-}
-
-/* logo size */
-.android .navbar .navbar-logo svg,
-.android .navbar .navbar-logo img {
-  width: 26px !important;
-  height: 26px !important;
-  object-fit: contain !important;
-}
-
-/* prevent overlap with pages */
-.android .content-container {
-  margin-left: 0 !important;
-  padding-bottom: 90px !important;
-  width: 100% !important;
+  padding: 4px 4px !important;
+  border-radius: 8px !important;
   box-sizing: border-box !important;
 }
 
-/* Android: remove desktop spacing that can push items out */
-.android .navbar .navbar-links {
-  margin-top: 0 !important;
+/* Make nav links share available space */
+.android .navbar .navbar-link {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
-/* Android: prevent logo from being huge in bottom bar */
+/* Android logo box, bigger and visible */
 .android .navbar .navbar-logo {
-  font-size: 12px !important;
-}
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
+  height: 58px !important;
 
-/* =========================================
-   FIX: Show Sign Out in Android bottom nav
-   Paste at VERY BOTTOM of Navbar.css
-   ========================================= */
-
-/* Let navbar row fit links + signout */
-.android .navbar .navbar-container {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 6px !important;
-}
-
-/* Main nav links take available space */
-.android .navbar .navbar-links {
-  flex: 1 !important;
-  width: auto !important;
+  padding: 0 !important;
   margin: 0 !important;
+
   display: flex !important;
-  flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-around !important;
-  gap: 6px !important;
+  justify-content: center !important;
+
+  font-size: 0 !important; /* hide logo text label on Android */
+  line-height: 0 !important;
+  gap: 0 !important;
+
+  overflow: hidden !important;
+  border-radius: 50% !important;
+  background: transparent !important;
 }
 
-/* ✅ SHOW signout again */
+/* Bigger actual logo image/icon */
+.android .navbar .navbar-logo img,
+.android .navbar .navbar-logo svg {
+  width: 40px !important;
+  height: 40px !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+/* Zoom image a bit in case asset has white padding */
+.android .navbar .navbar-logo img {
+  transform: scale(1.35) !important;
+  transform-origin: center center !important;
+}
+
+/* Show signout in Android bottom nav */
 .android .navbar .navbar-signout {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  flex: 0 0 auto !important;
   padding: 0 !important;
   margin: 0 !important;
-  flex-shrink: 0 !important;
 }
 
-/* Make signout look like a bottom-nav tab */
+/* Signout styled like compact tab */
 .android .navbar .navbar-link-signout {
   display: flex !important;
   flex-direction: column !important;
@@ -249,18 +280,70 @@
   background: transparent !important;
   text-decoration: none !important;
 
-  font-size: 12px !important;
+  font-size: 10px !important;
   font-weight: 700 !important;
-  line-height: 1.2 !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
 
-  padding: 6px 10px !important;
-  border-radius: 10px !important;
+  padding: 4px 4px !important;
+  border-radius: 8px !important;
   margin: 0 !important;
-  min-width: 64px !important;
+  min-width: 48px !important;
+  box-sizing: border-box !important;
 }
 
-/* Optional hover/tap style for Android */
 .android .navbar .navbar-link-signout:hover {
   color: #fff !important;
   background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Prevent page content from being covered by bottom nav */
+.android .content-container {
+  margin-left: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding-bottom: calc(var(--bottom-nav-h) + 12px) !important;
+}
+
+/* =========================
+   Extra-small phones
+   ========================= */
+@media (max-width: 380px) {
+  :root {
+    --bottom-nav-h: 68px;
+  }
+
+  .android .navbar .navbar-container {
+    padding: 3px 4px !important;
+    gap: 2px !important;
+  }
+
+  .android .navbar .navbar-header {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+  }
+
+  .android .navbar .navbar-link,
+  .android .navbar .navbar-link-signout {
+    font-size: 9px !important;
+    padding: 3px 3px !important;
+  }
+
+  .android .navbar .navbar-logo {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    height: 50px !important;
+  }
+
+  .android .navbar .navbar-logo img,
+  .android .navbar .navbar-logo svg {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .android .navbar .navbar-link-signout {
+    min-width: 44px !important;
+  }
 }

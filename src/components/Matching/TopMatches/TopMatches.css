@@ -1,17 +1,42 @@
+/* TopMatches.css */
+
+/* =========================
+   TopMatch Page Wrapper (Desktop-safe defaults)
+   Add your actual page wrapper class here if needed
+   ========================= */
+.TopMatchContainer,
+.TopMatchPage,
+.TopMatchWrapper,
+.tm-container,
+.tm-page,
+.tm-wrapper,
+.tm-detail-view,
+.topmatch-container,
+.topmatch-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================
+   Top Match List Card
+   ========================= */
 .tm-card {
   width: 100%;
   background: #fff;
   border: 1px solid #e7e7e7;
   border-radius: 14px;
   padding: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   margin-bottom: 14px;
+  box-sizing: border-box;
 }
 
 .tm-row {
   display: flex;
   gap: 12px;
   align-items: flex-start;
+  width: 100%;
+  min-width: 0;
 }
 
 .tm-avatar {
@@ -22,12 +47,14 @@
   flex: 0 0 54px;
   border: 1px solid #e7e7e7;
   background: #f6f6f6;
+  box-sizing: border-box;
 }
 
 .tm-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .tm-avatar-placeholder {
@@ -50,6 +77,7 @@
 
 .tm-nameblock {
   min-width: 0;
+  flex: 1;
 }
 
 .tm-name {
@@ -76,6 +104,7 @@
   border-radius: 999px;
   font-size: 13px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tm-details {
@@ -90,12 +119,14 @@
   gap: 8px;
   color: #333;
   font-size: 13.5px;
+  min-width: 0;
 }
 
 .tm-icon {
   width: 20px;
   text-align: center;
   opacity: 0.9;
+  flex: 0 0 20px;
 }
 
 .tm-text {
@@ -118,6 +149,7 @@
   font-weight: 700;
   border: 1px solid transparent;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .tm-btn-outline {
@@ -132,42 +164,226 @@
 }
 
 /* =========================
-   ✅ ANDROID ONLY OVERRIDES
-   (won't affect desktop)
+   Mobile / Android Fixes
    ========================= */
-.android .tm-card {
-  border-radius: 16px;
-  padding: 12px;
-  margin-bottom: 12px;
+@media (max-width: 768px) {
+  /* Safety */
+  html,
+  body,
+  #root {
+    overflow-x: hidden !important;
+  }
+
+  /* TopMatch wrappers:
+     removes desktop left offset / transforms that push content right */
+  .TopMatchContainer,
+  .TopMatchPage,
+  .TopMatchWrapper,
+  .tm-container,
+  .tm-page,
+  .tm-wrapper,
+  .tm-detail-view,
+  .topmatch-container,
+  .topmatch-page,
+  [class*="TopMatch"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Make page content stack and center */
+  .TopMatchContainer,
+  .TopMatchPage,
+  .TopMatchWrapper,
+  .tm-container,
+  .tm-page,
+  .tm-wrapper,
+  .tm-detail-view,
+  .topmatch-container,
+  .topmatch-page {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-bottom: calc(var(--bottom-nav-h, 72px) + 12px) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* TopMatch list card mobile */
+  .tm-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .tm-avatar {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
+
+  .tm-name {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: break-word !important;
+    font-size: 16px;
+  }
+
+  .tm-text {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: break-word !important;
+  }
+
+  .tm-topline {
+    align-items: flex-start;
+  }
+
+  .tm-badge {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .tm-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tm-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  /* Back button safety in detail page */
+  .tm-page button,
+  .tm-wrapper button,
+  .tm-detail-view button,
+  .TopMatchPage button,
+  .TopMatchContainer button {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* =========================================
+     ProfileCard inside TopMatch detail view
+     This is the critical fix for "squeezed to right"
+     ========================================= */
+  .ProfileCard,
+  .ProfileCard.active,
+  .ProfileCard.viewMode,
+  .ProfileCard.viewMode.active {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    inset: auto !important;
+    transform: none !important;
+    float: none !important;
+
+    /* Use parent width so it centers inside page wrapper */
+    width: min(100%, 420px) !important;
+    max-width: 420px !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    display: block !important;
+    margin: 8px auto !important;
+    align-self: center !important;
+
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .ProfileCard *,
+  .ProfileCardBodyy,
+  .ProfileCardInfo,
+  .ProfileCardCourses,
+  .ProfileCardDescription {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .ProfileCardImage {
+    width: 100% !important;
+  }
+
+  .ProfileCardImage img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 34vh !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  .ProfileCardFooter {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center !important;
+    padding: 10px !important;
+  }
+
+  .ProfileCardFooter button {
+    flex: 1 1 140px !important;
+    max-width: 100% !important;
+  }
 }
 
-.android .tm-avatar {
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-}
+/* Extra small phones */
+@media (max-width: 380px) {
+  .tm-card {
+    padding: 10px;
+    border-radius: 14px;
+  }
 
-.android .tm-text {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  word-break: break-word;
-}
+  .tm-row {
+    gap: 10px;
+  }
 
-.android .tm-name {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  font-size: 16px;
-}
+  .tm-avatar {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+  }
 
-.android .tm-actions {
-  flex-direction: column;
-  gap: 10px;
-}
+  .tm-name {
+    font-size: 15px;
+  }
 
-.android .tm-btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 14px;
+  .tm-subtitle,
+  .tm-detail {
+    font-size: 12.5px;
+  }
+
+  .tm-badge {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  .ProfileCard,
+  .ProfileCard.active,
+  .ProfileCard.viewMode,
+  .ProfileCard.viewMode.active {
+    width: min(100%, 390px) !important;
+    max-width: 390px !important;
+  }
 }

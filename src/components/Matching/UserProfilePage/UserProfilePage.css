@@ -1,0 +1,101 @@
+/* UserProfilePage.css */
+
+.user-profile-page {
+  margin-left: 260px; /* desktop sidebar space */
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.user-profile-page__inner {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.user-profile-page__back-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #2f8cff;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.user-profile-page__status {
+  color: #2b2d42;
+}
+
+.user-profile-page__error {
+  color: crimson;
+  font-weight: 700;
+}
+
+.user-profile-page__card-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+/* Mobile / Android */
+@media (max-width: 768px) {
+  .user-profile-page {
+    margin-left: 0 !important; /* main fix */
+    padding: 8px !important;
+    padding-bottom: calc(var(--bottom-nav-h, 72px) + 14px) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  .user-profile-page__inner {
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+  }
+
+  .user-profile-page__back-btn {
+    margin-bottom: 8px !important;
+  }
+
+  .user-profile-page__card-wrap {
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+  }
+
+  .user-profile-page__card-wrap .ProfileCard,
+  .user-profile-page__card-wrap .ProfileCard.active,
+  .user-profile-page__card-wrap .ProfileCard.viewMode,
+  .user-profile-page__card-wrap .ProfileCard.viewMode.active {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    inset: auto !important;
+    float: none !important;
+
+    width: 100% !important;
+    max-width: 420px !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+}

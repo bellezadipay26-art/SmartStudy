@@ -1,28 +1,31 @@
 /* ProfileCard.css */
 
+/* =========================
+   Desktop Base
+   ========================= */
 .ProfileCard {
   position: absolute;
+  width: 600px;
+  height: 810px;
   overflow-x: hidden;
   text-align: center;
   border: 1px solid #ddd;
   background-color: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  height: 810px;
-  width: 600px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 .ProfileCard.active {
-  /* transform: translateX(10%) translateY(-0%) scale(1); */
+  width: 600px;
+  height: 810px;
   box-shadow: 5px 2px 15px rgba(0, 0, 0, 0.4);
   z-index: 40;
-  /* background-color: red; */
-  height: 810px;
-  width: 600px;
 }
 
+/* Keep these names because your component may use them */
 .ProfileCardHeaderr {
   padding: 10px;
   border-bottom: 1px solid #ddd;
@@ -39,18 +42,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.ProfileCardBodyy p {
-  /* padding: 10px; */
+.ProfileCardImage {
+  width: 100%;
 }
-
 
 .ProfileCardImage img {
   width: 100%;
   max-height: 280px;
+  height: auto;
+  display: block;
+  object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ProfileCardInfo,
+.ProfileCardCourses,
+.ProfileCardDescription {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .ProfileCardInfo p,
@@ -59,27 +73,22 @@
   margin: 0;
   color: #5e6472;
   font-size: 1rem;
-}
-
-.ProfileCardInfo {
-  /* margin-bottom: 20px; */
-}
-
-.ProfileCardCourses {
-  /* margin-bottom: 20px; */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ProfileCardDescription {
-  /* border: 2px solid #2B2D42; */
   text-align: justify;
   border-radius: 10px;
   height: auto;
-  width: 100%;
 }
 
 .ProfileCardFooter {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .ProfileCardFooter button {
@@ -90,6 +99,7 @@
   border-radius: 5px;
   font-size: 1rem;
   font-weight: bold;
+  box-sizing: border-box;
 }
 
 .ProfileCardFooter button.like {
@@ -106,39 +116,7 @@
   opacity: 0.8;
 }
 
-
-/* ✅ ANDROID ONLY OVERRIDES (APK) */
-.android .ProfileCard,
-.android .ProfileCard.active {
-  position: relative;
-  width: min(92vw, 600px);
-  max-height: calc(100dvh - 24px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin: 12px auto;
-
-  /* remove fixed desktop sizing */
-  height: auto;
-}
-
-.android .ProfileCardImage img {
-  width: 100%;
-  height: auto;
-  max-height: 35vh;
-  object-fit: contain;
-}
-
-.android .ProfileCardFooter {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 10px;
-}
-
-.android .ProfileCardFooter button {
-  flex: 1 1 140px;
-}
-
+/* View mode on desktop (used in profile page / detail page) */
 .ProfileCard.viewMode,
 .ProfileCard.viewMode.active {
   position: relative;
@@ -150,4 +128,97 @@
   max-width: 650px;
   height: auto;
   z-index: 1;
+}
+
+/* Global horizontal overflow safety */
+html,
+body,
+#root {
+  overflow-x: hidden;
+}
+
+/* =========================
+   Mobile / Android
+   ========================= */
+@media (max-width: 768px) {
+  .ProfileCard,
+  .ProfileCard.active,
+  .ProfileCard.viewMode,
+  .ProfileCard.viewMode.active {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
+    transform: none !important;
+    float: none !important;
+
+    width: 100% !important;
+    max-width: 420px !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    margin: 0 auto !important;
+    display: block !important;
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    border-radius: 12px !important;
+    z-index: 1 !important;
+  }
+
+  .ProfileCard *,
+  .ProfileCardHeaderr,
+  .ProfileCardHeader,
+  .ProfileCardBodyy,
+  .ProfileCardInfo,
+  .ProfileCardCourses,
+  .ProfileCardDescription,
+  .ProfileCardFooter {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .ProfileCardBodyy {
+    padding: 10px !important;
+    width: 100% !important;
+  }
+
+  .ProfileCardImage {
+    width: 100% !important;
+  }
+
+  .ProfileCardImage img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 34vh !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  .ProfileCardInfo p,
+  .ProfileCardCourses p,
+  .ProfileCardDescription p {
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .ProfileCardFooter {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+
+  .ProfileCardFooter button {
+    flex: 1 1 140px !important;
+    max-width: 100% !important;
+  }
 }
