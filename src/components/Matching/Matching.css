@@ -1,112 +1,115 @@
 /* Matching.css */
 
+/* =========================
+   Page Layout (Desktop)
+   ========================= */
+
+:root {
+  --desktop-sidebar-w: 10%;   /* matches your desktop navbar width */
+  --matching-max-w: 980px;
+}
+
 .Matching {
-  max-width: 1400px;
-  width: 100%;
-  height: 100vh;
   min-height: 100vh;
-   background: #EDF2F4;
-  background-color: #EDF2F4;
-  justify-content: center;
-  align-content: center;
-  margin-left: 400px;
-  display: flex;
   box-sizing: border-box;
-  padding: 20px 16px;
+  overflow-x: hidden;
+
+  /* leave space for left desktop navbar */
+  margin-left: var(--desktop-sidebar-w);
+  width: calc(100% - var(--desktop-sidebar-w));
+
+  padding: 18px 16px 24px;
+  background: #edf2f4;
 }
 
-h1 {
-  /* Add this line */
-  /* z-index: 3; */
-  justify-content: center;
-  top: 0
-}
-
-.ProfileCardsContainer {
-  margin-left: -195px;
-  margin-top: 100px;
-  align-items: center;
-  align-content: center;
-  display: flex;
-  justify-content: center;
-}
-
-.MatchingUserCard {
+/* Header block (your h1/p currently use inline styles, this just adds spacing safety) */
+.Matching > div:first-child {
   width: 100%;
-  height: 100%;
-  border: 1px solid #ddd;
-  padding: 10px;
-  background-color: #fff;
-  transform-origin: 50% 50%;
-  transition: transform 0.3s ease-in-out;
-  z-index: 1;
+  box-sizing: border-box;
 }
 
-.MatchingUserCard.active {
-  transform: translateX(-50%) translateY(-50%) scale(1);
-  z-index: 2;
-}
-
-/* Remove the margin-bottom from the last child */
-.MatchingUserCard:last-child {
-  margin-bottom: -20px;
-}
-
-
-.MatchingUserCard button {
-  margin-right: 5px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border: none;
-  color: #5E6472;
-  border-radius: 3px;
-}
-
-/* Like button */
-.MatchingUserCard button.like {
-  background-color: #B8F2E6;
-}
-
-/* Dislike button */
-.MatchingUserCard button.dislike {
-  background-color: #ffa69e;
-}
-
-/* Adjust the color of the buttons on hover */
-.MatchingUserCard button:hover {
-  opacity: 0.8;
-}
-
+/* List wrapper */
 .TopMatchesContainer {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: var(--matching-max-w);
+  margin: 14px auto 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
   box-sizing: border-box;
-  padding: 0 12px;
+}
+
+/* Prevent double spacing if tm-card already has margin-bottom */
+.TopMatchesContainer .tm-card {
+  margin-bottom: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Popup safety */
+.Matching * {
+  box-sizing: border-box;
 }
 
 /* =========================
-   ✅ ANDROID ONLY OVERRIDES
-   (won't affect desktop)
+   Tablet / Mobile (generic)
+   ========================= */
+@media (max-width: 768px) {
+  .Matching {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding: 10px 8px
+      calc(var(--bottom-nav-h, 88px) + 14px) !important; /* room for bottom nav */
+    overflow-x: hidden !important;
+  }
+
+  .TopMatchesContainer {
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 10px auto 0 !important;
+    gap: 12px !important;
+  }
+
+  /* tighten title block spacing on mobile */
+  .Matching > div:first-child {
+    max-width: 420px !important;
+    margin: 0 auto !important;
+  }
+
+  /* back button wrapper (last div in your component) */
+  .Matching > div:last-child {
+    max-width: 420px !important;
+    margin: 10px auto 0 !important;
+  }
+}
+
+/* =========================
+   Android class-based override
+   (if you add .android on body/root)
    ========================= */
 .android .Matching {
   margin-left: 0 !important;
+  width: 100% !important;
   max-width: 100% !important;
-  width: 100%;
-  min-height: calc(100dvh - var(--bottom-nav-h)); 
-  height: auto !important;
-  display: block !important;
-  background: #EDF2F4;
-  padding: 12px;
-  padding-bottom: calc(var(--bottom-nav-h) + 20px); /* ✅ key: reserve space */
-  padding-top: 14px;
+
+  padding: 10px 8px
+    calc(var(--bottom-nav-h, 88px) + 14px) !important;
+  background: #edf2f4 !important;
+  overflow-x: hidden !important;
 }
 
 .android .TopMatchesContainer {
-  max-width: 100% !important;
-  margin: 0 auto;
-  padding: 0 !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  margin: 10px auto 0 !important;
+  gap: 12px !important;
+}
+
+.android .Matching > div:first-child,
+.android .Matching > div:last-child {
+  width: 100% !important;
+  max-width: 420px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }

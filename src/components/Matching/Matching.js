@@ -1,13 +1,13 @@
 // Matching.js
 
-import { fetchUserDetails } from "../../services/account";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../services/firebase";
+import { fetchUserDetails } from "../../services/account";
 import {
   getRandomUsers,
   likeUser,
-  dislikeUser,
+  dislikeUser, // kept in import if you plan to use skip later
   haveMutualLike,
 } from "../../services/matching";
 
@@ -20,60 +20,76 @@ function Matching() {
   const [users, setUsers] = useState([]);
   const [showMatchPopup, setShowMatchPopup] = useState(false);
   const [myInfo, setMyInfo] = useState(null);
-  
+
   const navigate = useNavigate();
 
   const computeMatchPercent = (me, other) => {
-  if (!me || !other) return 0;
+    if (!me || !other) return 0;
 
-  const meSubs = new Set(me.currentCourses || []);
-  const otherSubs = new Set(other.currentCourses || []);
-  const overlap = [...meSubs].filter((s) => otherSubs.has(s)).length;
-  const maxSubs = Math.max(meSubs.size, otherSubs.size, 1);
-  const subjectScore = overlap / maxSubs;
+    const meSubs = new Set(me.currentCourses || []);
+    const otherSubs = new Set(other.currentCourses || []);
 
-  const scheduleScore =
-    me.preferredSchedule &&
-    other.preferredSchedule &&
-    me.preferredSchedule === other.preferredSchedule
-      ? 1
-      : 0;
+    const overlap = [...meSubs].filter((s) => otherSubs.has(s)).length;
+    const maxSubs = Math.max(meSubs.size, otherSubs.size, 1);
+    const subjectScore = overlap / maxSubs;
 
-  const styleScore =
-    me.learningStyle &&
-    other.learningStyle &&
-    me.learningStyle === other.learningStyle
-      ? 1
-      : 0;
+    const scheduleScore =
+      me.preferredSchedule &&
+      other.preferredSchedule &&
+      me.preferredSchedule === other.preferredSchedule
+        ? 1
+        : 0;
 
-  const majorScore =
-    me.major &&
-    other.major &&
-    me.major.trim().toLowerCase() === other.major.trim().toLowerCase()
-      ? 1
-      : 0;
+    const styleScore =
+      me.learningStyle &&
+      other.learningStyle &&
+      me.learningStyle === other.learningStyle
+        ? 1
+        : 0;
 
-  const yearScore =
-    me.yearsOfStudy &&
-    other.yearsOfStudy &&
-    String(me.yearsOfStudy) === String(other.yearsOfStudy)
-      ? 1
-      : 0;
+    const majorScore =
+      me.major &&
+      other.major &&
+      me.major.trim().toLowerCase() === other.major.trim().toLowerCase()
+        ? 1
+        : 0;
 
-  let pct =
-    subjectScore * 50 +
-    scheduleScore * 20 +
-    styleScore * 20 +
-    majorScore * 5 +
-    yearScore * 5;
+    const yearScore =
+      me.yearsOfStudy &&
+      other.yearsOfStudy &&
+      String(me.yearsOfStudy) === String(other.yearsOfStudy)
+        ? 1
+        : 0;
 
-  pct = Math.round(pct);
-  if (pct < 0) pct = 0;
-  if (pct > 100) pct = 100;
+    let pct =
+      subjectScore * 50 +
+      scheduleScore * 20 +
+      styleScore * 20 +
+      majorScore * 5 +
+      yearScore * 5;
 
-  return pct;
-};
+    pct = Math.round(pct);
 
+    if (pct < 0) pct = 0;
+    if (pct > 100) pct = 100;
+
+    return pct;
+  };
+
+  const sortUsersByMatchDesc = (list) => {
+    return [...(list || [])].sort((a, b) => {
+      const aPct = Number(a?.matchPercent ?? 0);
+      const bPct = Number(b?.matchPercent ?? 0);
+
+      // Highest percentage first
+      if (bPct !== aPct) return bPct - aPct;
+
+      // Tie breaker for stable/clean ordering
+      return String(a?.name || "").localeCompare(String(b?.name || ""));
+    });
+  };
+
+  // Auth guard
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -85,48 +101,57 @@ function Matching() {
 
     return () => unsubscribe();
   }, [navigate]);
-  
-  useEffect(() => {
-  const loadMyInfo = async () => {
-    if (!currentUser?.uid) return;
-    const info = await fetchUserDetails(currentUser.uid);
-    setMyInfo(info || null);
-  };
-  loadMyInfo();
-}, [currentUser]);
 
- useEffect(() => {
-  const fetchRandomUsers = async () => {
-    try {
-      // wait until both are ready
-      if (currentUser?.uid && myInfo) {
+  // Load current user's profile details
+  useEffect(() => {
+    const loadMyInfo = async () => {
+      if (!currentUser?.uid) return;
+
+      try {
+        const info = await fetchUserDetails(currentUser.uid);
+        setMyInfo(info || null);
+      } catch (error) {
+        console.error("Error loading current user info:", error);
+        setMyInfo(null);
+      }
+    };
+
+    loadMyInfo();
+  }, [currentUser]);
+
+  // Fetch match candidates + compute % + sort descending
+  useEffect(() => {
+    const fetchRandomUsersList = async () => {
+      try {
+        if (!currentUser?.uid || !myInfo) return;
+
         const randomizedUsers = await getRandomUsers(10, currentUser.uid);
 
-        const usersWithMatch = randomizedUsers.map((u) => ({
+        const usersWithMatch = (randomizedUsers || []).map((u) => ({
           ...u,
           matchPercent: computeMatchPercent(myInfo, u),
         }));
 
-        setUsers(usersWithMatch);
+        setUsers(sortUsersByMatchDesc(usersWithMatch));
+      } catch (error) {
+        console.error("Error fetching randomized users:", error);
       }
-    } catch (error) {
-      console.error("Error fetching randomized users:", error);
-    }
-  };
+    };
 
-  fetchRandomUsers();
-}, [currentUser, myInfo]);
+    fetchRandomUsersList();
+  }, [currentUser, myInfo]);
 
   // View Profile button
   const handleViewProfile = (userData) => {
-  console.log("UID:", userData.uid, userData);
-  navigate(`/user/${userData.uid}`);
-};
+    console.log("UID:", userData?.uid, userData);
+    if (!userData?.uid) return;
+    navigate(`/user/${userData.uid}`);
+  };
 
   // Connect button (LIKE)
   const handleConnect = async (userData) => {
     try {
-      if (!currentUser?.uid) return;
+      if (!currentUser?.uid || !userData?.uid) return;
 
       await likeUser(currentUser.uid, userData.uid);
 
@@ -136,17 +161,17 @@ function Matching() {
         setTimeout(() => setShowMatchPopup(false), 2400);
       }
 
-      // Optional: remove card after connect para parang screenshot clean
+      // Remove connected user from list
       setUsers((prev) => prev.filter((u) => u.uid !== userData.uid));
     } catch (error) {
       console.error("Error on connect:", error);
     }
   };
 
-  // OPTIONAL: if you want a "skip" behavior (not in screenshot)
+  // OPTIONAL SKIP (if you want it later)
   // const handleSkip = async (userData) => {
   //   try {
-  //     if (!currentUser?.uid) return;
+  //     if (!currentUser?.uid || !userData?.uid) return;
   //     await dislikeUser(currentUser.uid, userData.uid);
   //     setUsers((prev) => prev.filter((u) => u.uid !== userData.uid));
   //   } catch (error) {
@@ -178,7 +203,6 @@ function Matching() {
         <MatchPopup onClose={() => setShowMatchPopup(false)} />
       )}
 
-      {/* Optional back button like screenshot */}
       <div style={{ maxWidth: 520, margin: "10px auto 0" }}>
         <button
           style={{
